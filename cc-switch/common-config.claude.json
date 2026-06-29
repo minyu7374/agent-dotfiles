@@ -1,0 +1,29 @@
+{
+  "statusLine": {
+    "type": "command",
+    "command": "ccstatusline"
+  },
+  "enabledPlugins": {
+    "ecc@ecc": true,
+    "gopls-lsp@claude-plugins-official": true,
+    "pyright-lsp@claude-plugins-official": true,
+    "clangd-lsp@claude-plugins-official": true,
+    "context7@claude-plugins-official": true
+  },
+  "extraKnownMarketplaces": {
+    "ecc": {
+      "source": {
+        "source": "git",
+        "url": "https://github.com/affaan-m/everything-claude-code.git"
+      }
+    },
+    "karpathy-skills": {
+      "source": {
+        "source": "github",
+        "repo": "forrestchang/andrej-karpathy-skills"
+      }
+    }
+  },
+  "effortLevel": "high",
+  "skipWorkflowUsageWarning": true
+}

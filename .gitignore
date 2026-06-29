@@ -1,0 +1,12 @@
+# macOS
+.DS_Store
+
+# Claude Code per-machine local settings (not for version control)
+.claude/settings.local.json
+
+# This repo's content IS AI-assistant instruction/config files. The user's
+# global ~/.gitignore_global ignores CLAUDE.md / GEMINI.md by name (which also
+# catches apps/claude.md, apps/gemini.md on case-insensitive filesystems);
+# re-include them here so they are tracked.
+!CLAUDE.md
+!GEMINI.md
