@@ -6,7 +6,7 @@
 
 | 层 | 本仓文件 | 落地位置 | 机制 |
 |---|---|---|---|
-| 公共配置(插件/statusLine/effort/marketplaces) | `cc-switch/common-config.claude.json` | `~/.claude/settings.json` | cc-switch 公共配置 |
+| 公共配置(插件/statusLine/effort/marketplaces/env) | `cc-switch/common-config.claude.json` | `~/.claude/settings.json` | cc-switch 公共配置 |
 | 自定义 always-on 规则 | `rules/*.md` | `~/.claude/rules/` | ECC 插件加载 `~/.claude/rules/**` 进上下文 |
 | 自定义技能 | `skills/architectural-harmony/` | `~/.claude/skills/` | cc-switch-cli skills 或手放 |
 | 开源插件 | 见 `open-source.md` | 插件 cache | marketplace 安装 + `enabledPlugins` 启用 |

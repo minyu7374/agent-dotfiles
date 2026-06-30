@@ -38,7 +38,7 @@ Everything else is open-source. The repo's own content is just:
 
 ### Layout of the rest
 
-- `cc-switch/` — the SSOT snapshot: `common-config.claude.json` (5 plugins + statusLine + effort + marketplaces), `common-config.codex.toml`, `skills-matrix.md` (skill × app enable matrix + cc-switch commands).
+- `cc-switch/` — the SSOT snapshot: `common-config.claude.json` (5 plugins + statusLine + effort + marketplaces + env), `common-config.codex.toml`, `skills-matrix.md` (skill × app enable matrix + cc-switch commands).
 - `apps/` — per-app assembly guides: `claude.md`, `codex.md`, `gemini.md`. Each maps *repo file → landing location → mechanism*.
 - `open-source.md` — inventory of open-source plugins/skills (enabled vs. deliberately disabled, with reasons) and their marketplaces.
 

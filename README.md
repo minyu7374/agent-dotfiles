@@ -15,7 +15,7 @@
 agent-dotfiles/
 ├── README.md                       # 本文件:理念 + 清单 + 应用总流程
 ├── cc-switch/                      # cc-switch 真源快照(可回灌)
-│   ├── common-config.claude.json   #   Claude 公共配置(5 插件 + statusLine + effort + marketplaces)
+│   ├── common-config.claude.json   #   Claude 公共配置(5 插件 + statusLine + effort + marketplaces + env)
 │   ├── common-config.codex.toml    #   Codex 公共配置(reasoning=high 等)
 │   └── skills-matrix.md            #   技能 × 应用 启用矩阵 + cc-switch 命令
 ├── apps/                           # 各 app 装配方案
