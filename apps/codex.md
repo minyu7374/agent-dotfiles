@@ -45,4 +45,6 @@ cat memories/agent-principles.md >> ~/.codex/AGENTS.md
 
 > **`~/.codex/config.toml` 双写**:ECC sync 写参考配置、cc-switch-cli 写 provider/reasoning 注入段——二者管不同部分。先 sync 再 cc-switch,让 cc-switch 的注入段最后落定(它负责 provider 切换);**不要**手动 `cp .codex/config.toml ~/.codex/config.toml` 覆盖 cc-switch 的注入段。
 
+> **脚本归属(须 clone)**:`sync-ecc-to-codex.sh` 是 **ECC 仓库内**的脚本,按仓库相对路径读取 `AGENTS.md`/`.codex/`/`commands/` 并调 `scripts/codex/*` 辅助脚本——**必须在 clone 出来的 ECC 仓库里跑,没有 `npx` 免 clone 版**。这点和 `install.sh`(可用 `npx ecc-install`)不同;ECC 也只为 codex 提供 clone+sync 或手动 `cp .codex/config.toml`,不推荐 `npx ecc-install --target codex`。
+
 > 注:Codex 的全局指令文件按 AGENTS.md 约定放在 `~/.codex/AGENTS.md`(ECC sync 已写入)。若你的 Codex 版本用不同的全局指令路径,把对应文件放到该位置即可。

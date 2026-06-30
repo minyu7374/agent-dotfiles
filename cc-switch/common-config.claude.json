@@ -1,7 +1,9 @@
 {
   "statusLine": {
     "type": "command",
-    "command": "ccstatusline"
+    "command": "ccstatusline",
+    "refreshInterval": 10,
+    "padding": 0
   },
   "enabledPlugins": {
     "ecc@ecc": true,

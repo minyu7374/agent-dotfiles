@@ -20,7 +20,7 @@ The repo content is almost entirely Chinese markdown. The primary entry point an
 Three assistants are kept aligned on the same engineering discipline (plan-first / architectural coherence / function layout / coding discipline):
 
 - **Claude** — discipline via **plugins** (ECC + karpathy) **+ always-on rules** in `~/.claude/rules/`.
-- **Codex** — no plugins, but ECC ships a **first-class native installer**: `scripts/sync-ecc-to-codex.sh` writes `~/.codex/AGENTS.md` + 32 skills + MCP. The repo adopts it; cc-switch-cli only handles Codex's provider / reasoning config.
+- **Codex** — no plugins, but ECC ships a **first-class native sync**: `scripts/sync-ecc-to-codex.sh` (an ECC-repo script, **clone-required, no `npx` form**) writes `~/.codex/AGENTS.md` + 32 skills + MCP. The repo adopts it; cc-switch-cli only handles Codex's provider / reasoning config.
 - **Gemini (=Antigravity)** — ECC has **no global installer** for it (`install.sh` only does project-local `./.agent/`, and Antigravity reads just `.agent/rules/`), so globally Gemini stays on `~/.gemini/GEMINI.md` (from `memories/agent-principles.md`) + cc-switch-synced skills (`karpathy-guidelines` + `architectural-harmony`). See `apps/gemini.md`.
 
 The skill matrix (`cc-switch/skills-matrix.md`) governs Claude + Gemini; Codex's skills come from ECC's sync.

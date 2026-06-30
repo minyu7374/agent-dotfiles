@@ -26,7 +26,7 @@ ECC 不止 Claude——其仓库提供跨 harness 的安装方式,但三端机�
 |---|---|---|---|
 | **Claude** | 插件(plugin) | `/plugin install ecc@ecc`(见上) | 插件 cache + `enabledPlugins` |
 | **Codex** | ECC 原生 sync(first-class) | `npm install && bash scripts/sync-ecc-to-codex.sh` | `~/.codex/AGENTS.md` + 32 skills + 6–7 MCP + 参考 `.codex/config.toml` |
-| **Gemini/agy** | 无全局安装器(install.sh 仅项目本地) | 项目级 `./install.sh --profile minimal --target antigravity` | 全局走 cc-switch-cli 同步技能 + `GEMINI.md`(见 `apps/gemini.md`) |
+| **Gemini/agy** | 无全局安装器(仅项目本地) | 项目级 `npx ecc-install --profile minimal --target antigravity` | 全局走 cc-switch-cli 同步技能 + `GEMINI.md`(见 `apps/gemini.md`) |
 
 ```bash
 # Codex:在 clone 下来的 ECC 仓库根目录执行
@@ -36,6 +36,10 @@ npm install && bash scripts/sync-ecc-to-codex.sh   # --dry-run 预览 / --update
 ```
 
 > **取舍**:codex 采用 ECC sync 后,`~/.codex/AGENTS.md` 由 ECC 写入、技能也由 ECC 管理(不再以 cc-switch 为唯一来源)。如需保留本仓准则措辞,sync 后 `cat memories/agent-principles.md >> ~/.codex/AGENTS.md`。详见 `apps/codex.md`。
+
+> **脚本归属 / 免 clone**:`install.sh` 与 `sync-ecc-to-codex.sh` 都是 **ECC 仓库内**的脚本。
+> - `install.sh` 有免 clone 版 **`npx ecc-install`**(npm 包 `ecc-universal`,自带资产),`--target` 任意(claude/cursor/antigravity/gemini…)。
+> - 但 **codex 的 `sync-ecc-to-codex.sh` 必须 clone、无 npx 版**:它按仓库相对路径读取 `AGENTS.md`/`.codex/`/`commands/` 并调 `scripts/codex/*`,做 codex 专属的 config.toml/MCP 合并、prompts、git hooks。`npx ecc-install --target codex` 虽能写 `~/.codex`,但 ECC **不推荐**用于 codex(README 只给 clone+sync 或手动 `cp .codex/config.toml`)。
 
 ## Claude 插件（plugin 是 Claude Code 专属概念）
 

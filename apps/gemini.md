@@ -53,14 +53,16 @@ cc-switch-cli use --app gemini <provider-id>
 **ECC `install.sh --target antigravity` 实际写哪**(已核实源码 `antigravity-project.js`):
 - `kind: 'project'` + `rootSegments: ['.agent']` → 写**项目本地** `<项目根>/.agent/`,**绝不写 `~/.gemini` 或 `~/.gemini/antigravity-cli`**。
 - install-targets 里**没有 `antigravity-home`**(对比 `claude-home`/`codex-home` 才是 `kind:'home'` → 写 `~/`),所以**任何参数都到不了全局**。
-- 在 ECC 仓库里跑 = 写进 `ECC/.agent/`(没用);要进你的项目,得 `cd 你的项目` 再调 ECC 的 install.sh。
+- 落点取 projectRoot/cwd:**用 `npx ecc-install` 时直接在你的项目目录里跑**即可(写到该目录的 `./.agent/`);若用 clone 出来的 `install.sh`,别在 ECC 仓库里跑(那样写进 `ECC/.agent/`,没用)。
 
 **可行性小结**:
 
 | 目标 | 可行? | 怎么做 |
 |---|---|---|
 | 全局接入(所有项目) | `install.sh` ❌ | 维护 `~/.gemini/GEMINI.md`(本仓 `agent-principles.md`)+ 可选 `~/.gemini/AGENTS.md`;即本节上文方案 |
-| 某仓库接入 ECC 规则 | ✅(仅规则) | 在该仓库 `./install.sh --profile minimal --target antigravity`(**别用 `core`**:`hooks-runtime` 在 agy 跑不起来);产物 `./.agent/rules/`,按仓库、在 cc-switch 之外 |
+| 某仓库接入 ECC 规则 | ✅(仅规则) | 在该仓库跑 `npx ecc-install --profile minimal --target antigravity`(**别用 `core`**:`hooks-runtime` 在 agy 跑不起来);产物 `./.agent/rules/`,按仓库、在 cc-switch 之外 |
 | 完整 ECC 运行时(agents/skills/hooks) | ❌ | Antigravity 全局只有规则 markdown,没有插件/运行时面,与装法无关 |
+
+> **脚本归属**:`install.sh` 是 **ECC 仓库内**的脚本;免 clone 用 **`npx ecc-install`**(npm 包 `ecc-universal`,自带 skills/agents/rules/.gemini 等资产),`--target`/`--profile` 同 `install.sh`。上表 antigravity 装法即用它。
 
 > `~/.gemini/antigravity-cli/`(settings.json / statusLine / trustedWorkspaces 等)是 **Antigravity 自管**的私有配置,ECC 不写、也不该手动塞 ECC 内容进去。
