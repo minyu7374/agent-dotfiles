@@ -20,7 +20,7 @@ agent-dotfiles/
 │   └── skills-matrix.md            #   技能 × 应用 启用矩阵 + cc-switch 命令
 ├── apps/                           # 各 app 装配方案
 │   ├── claude.md                   #   插件 + MCP + 技能 + 规则 + 应用命令(含 enabledPlugins 叠加坑)
-│   ├── codex.md                    #   reasoning + 技能 + AGENTS.md(无 plugin 概念)
+│   ├── codex.md                    #   ECC 原生 sync(AGENTS.md+skills+MCP) + cc-switch provider/reasoning
 │   └── gemini.md                   #   Gemini & Antigravity(agy 读 .gemini skills + GEMINI.md)
 ├── open-source.md                  # 开源插件/技能清单 + 来源 + 安装/取舍(不 vendoring)
 ├── rules/                          # 【自定义】Claude always-on 规则
@@ -29,7 +29,7 @@ agent-dotfiles/
 ├── skills/                         # 【自定义】技能(已纳入 cc-switch SSOT,三端同步)
 │   └── architectural-harmony/      #   架构连贯性的详细实施手册
 └── memories/
-    └── agent-principles.md         # 非 Claude 端常驻准则 → 部署到 ~/.gemini/GEMINI.md 与 ~/.codex/AGENTS.md
+    └── agent-principles.md         # 常驻准则 → ~/.gemini/GEMINI.md(主);codex 改走 ECC 原生 sync,此文件仅可选追加
 ```
 
 ## 自定义足迹（仅此而已）
@@ -39,11 +39,11 @@ agent-dotfiles/
 - `rules/architectural-coherence.md` —— 经核实 ECC + karpathy 均无等价物的唯一空白(总则)。
 - `skills/architectural-harmony/` —— 上者的详细手册(按需触发)。
 - `rules/function-layout.md` —— 既有的文件内布局约定。
-- `memories/agent-principles.md` —— 非 Claude 端(codex/gemini/agy)的常驻准则,单一来源部署到 `~/.gemini/GEMINI.md` 与 `~/.codex/AGENTS.md`。
+- `memories/agent-principles.md` —— 常驻准则 → `~/.gemini/GEMINI.md`(Gemini)。Codex 走 ECC sync(`AGENTS.md` 由 ECC 写),此文件对 codex 仅可选追加。
 
 其余全部依赖开源:**ECC**(主框架) + **karpathy-guidelines** + **ECC coding-standards** + Anthropic 官方文档技能(docx/pdf/pptx/xlsx)。
 
-> **三端对齐**:claude / codex / gemini(=agy)的工程准则一致。Claude 经"插件(ECC/karpathy)+ always-on 规则"承载;codex/gemini 无插件,经"技能(karpathy-guidelines + architectural-harmony)+ 常驻准则文件(agent-principles.md)"承载。技能集三端完全一致(见 `cc-switch/skills-matrix.md`)。
+> **三端对齐**:工程纪律一致,载体按 app 不同 —— Claude = 插件(ECC/karpathy)+ 规则;Codex = ECC 原生 sync(见 `apps/codex.md`);Gemini/agy = 技能 + `GEMINI.md`(ECC 无全局安装器,install.sh 仅项目本地;见 `apps/gemini.md`)。技能矩阵管 Claude + Gemini,Codex 技能来自 ECC。
 
 ## 全新机器:应用流程
 
@@ -59,12 +59,13 @@ cp rules/*.md ~/.claude/rules/                      # 自定义规则
 cp -r skills/architectural-harmony ~/.claude/skills/
 #    (开源插件:首次需在 /plugin 里从 marketplace 安装;详见 open-source.md 与 apps/claude.md 的叠加坑)
 
-# 2) Codex
+# 2) Codex —— 采用 ECC 原生 sync(非插件;详见 apps/codex.md)
+git clone https://github.com/affaan-m/ECC && cd ECC && npm install
+bash scripts/sync-ecc-to-codex.sh                   # ECC 纪律 + 32 skills + MCP + 参考 config(写 ~/.codex/AGENTS.md)
+cd -                                                # 回到本仓
 cc-switch-cli config common set --app codex --file cc-switch/common-config.codex.toml
-cc-switch-cli skills enable karpathy-guidelines architectural-harmony --app codex   # 必要时分两条
-cc-switch-cli skills sync                               # -> ~/.codex/skills/
-cp memories/agent-principles.md ~/.codex/AGENTS.md  # 常驻准则
-cc-switch-cli use --app codex <provider-id>
+cc-switch-cli use --app codex <provider-id>         # provider/模型注入 ~/.codex/config.toml
+# (可选)保留本仓准则措辞:cat memories/agent-principles.md >> ~/.codex/AGENTS.md
 
 # 3) Gemini / Antigravity(agy)
 cc-switch-cli skills enable karpathy-guidelines architectural-harmony --app gemini

@@ -17,7 +17,9 @@ cc-switch 把技能(SSOT)按"每个 app 是否启用"同步到各自的技能目
 
 图例:✅ 启用 / ⬜ 未启用。**当前三端(claude/codex/gemini=agy)全部一致启用。**
 
-> **对齐说明**:Claude 端的工程准则来自插件(ECC/karpathy)+ always-on 规则;非 Claude 端(codex / gemini / agy)无插件,故用**两层**对齐:① 把 `karpathy-guidelines` 与 `architectural-harmony` **作为技能**启用(上表);② 各自的常驻准则文件 —— `~/.gemini/GEMINI.md`(gemini/agy)与 `~/.codex/AGENTS.md`(codex)—— 承载 Claude 那边由规则承载的"方案先行/架构连贯/函数布局"总则,二者同源自 `memories/agent-principles.md`。
+> **Codex 例外**:本仓已让 codex 采用 **ECC 原生 sync**(见 `apps/codex.md`),其技能由 ECC 的 32 个管理。上表 codex 列只表示"cc-switch 仍可选同步到 codex 的自定义/补充技能"(如 ECC 未覆盖的 `architectural-harmony`),不再是 codex 技能的唯一来源。Claude 与 Gemini 仍以 cc-switch 为准。
+
+> **对齐说明**:Claude 端的工程准则来自插件(ECC/karpathy)+ always-on 规则;**Codex 经 ECC 原生 sync**(`~/.codex/AGENTS.md` + ECC skills,见 `apps/codex.md`);Gemini/agy 无插件,ECC 无全局安装器(install.sh 仅项目本地,见 `apps/gemini.md`),故全局用**两层**对齐:① 把 `karpathy-guidelines` 与 `architectural-harmony` **作为技能**启用(上表);② 常驻准则文件 `~/.gemini/GEMINI.md`(源自 `memories/agent-principles.md`)承载 Claude 那边由规则承载的"方案先行/架构连贯/函数布局"总则。
 
 ## 维护命令（cc-switch）
 

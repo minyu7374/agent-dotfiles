@@ -19,12 +19,11 @@ The repo content is almost entirely Chinese markdown. The primary entry point an
 
 Three assistants are kept aligned on the same engineering discipline (plan-first / architectural coherence / function layout / coding discipline):
 
-- **Claude** carries discipline via **plugins** (ECC + karpathy) **+ always-on rules** in `~/.claude/rules/`.
-- **Codex & Gemini(=Antigravity)** have *no plugin concept*, so they use a **two-layer** alignment:
-  1. A resident-principles file — `~/.codex/AGENTS.md` and `~/.gemini/GEMINI.md`, both deployed from the single source `memories/agent-principles.md`.
-  2. The same discipline **as skills** (`karpathy-guidelines` + `architectural-harmony`), synced by cc-switch.
+- **Claude** — discipline via **plugins** (ECC + karpathy) **+ always-on rules** in `~/.claude/rules/`.
+- **Codex** — no plugins, but ECC ships a **first-class native installer**: `scripts/sync-ecc-to-codex.sh` writes `~/.codex/AGENTS.md` + 32 skills + MCP. The repo adopts it; cc-switch-cli only handles Codex's provider / reasoning config.
+- **Gemini (=Antigravity)** — ECC has **no global installer** for it (`install.sh` only does project-local `./.agent/`, and Antigravity reads just `.agent/rules/`), so globally Gemini stays on `~/.gemini/GEMINI.md` (from `memories/agent-principles.md`) + cc-switch-synced skills (`karpathy-guidelines` + `architectural-harmony`). See `apps/gemini.md`.
 
-The skill set is identical across all three apps — see `cc-switch/skills-matrix.md` (the SSOT for which skill is enabled per app).
+The skill matrix (`cc-switch/skills-matrix.md`) governs Claude + Gemini; Codex's skills come from ECC's sync.
 
 ### The custom footprint (the only hand-authored assets)
 
@@ -35,7 +34,7 @@ Everything else is open-source. The repo's own content is just:
 | `rules/architectural-coherence.md` | always-on rule (Claude); the one verified gap — terse general rule, points to the skill |
 | `rules/function-layout.md` | always-on rule (Claude); in-file function ordering convention |
 | `skills/architectural-harmony/` | the detailed playbook behind `architectural-coherence` (on-demand, all three apps) |
-| `memories/agent-principles.md` | resident principles for the non-Claude apps; single source → `~/.gemini/GEMINI.md` + `~/.codex/AGENTS.md` |
+| `memories/agent-principles.md` | resident principles → `~/.gemini/GEMINI.md` (Gemini). Codex uses ECC's own `AGENTS.md`, so this file is just an optional append there. |
 
 ### Layout of the rest
 
@@ -46,8 +45,8 @@ Everything else is open-source. The repo's own content is just:
 ## Working in this repo
 
 - Changes to `cc-switch/*` and `apps/*` are **documentation of intent**. To actually apply them you (or the user) run `cc-switch-cli` commands — see `README.md` ("全新机器:应用流程") and `cc-switch/skills-matrix.md` ("维护命令"). Don't claim a config is "applied" from editing a snapshot file alone.
-- When editing `memories/agent-principles.md`, remember it is **single-source, two-target**: it deploys verbatim to both `~/.codex/AGENTS.md` and `~/.gemini/GEMINI.md`. Keep it app-neutral.
-- Keep the alignment invariant: a discipline change on one app should be mirrored across all three (rule/plugin on Claude; resident-principles file + skill on Codex/Gemini). The skills matrix must stay consistent across the three columns.
+- When editing `memories/agent-principles.md`, its live target is **`~/.gemini/GEMINI.md`**; keep it app-neutral. (Codex gets its `AGENTS.md` from ECC's sync — append this file there only if you want its exact wording.)
+- Keep the alignment invariant: the same discipline on every app, but the *carrier* differs — **Claude** plugin/rule, **Codex** ECC sync, **Gemini** `GEMINI.md` + cc-switch skills. Mirror a discipline change across whichever carriers apply.
 - The custom rules in `rules/` are themselves the conventions this repo follows (function layout, architectural coherence). Apply them when editing the custom skill or any future source.
 
 ## Known traps (from README "已知坑")

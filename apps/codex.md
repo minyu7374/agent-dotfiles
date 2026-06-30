@@ -1,19 +1,22 @@
 # Codex CLI 装配方案
 
-Codex **没有 Claude 的 plugin 概念**,能力来自三处:① 模型/行为级公共配置;② cc-switch 同步的技能;③ 常驻准则文件。由 cc-switch 以 `--app codex` 管理。
+Codex **没有 Claude 的 plugin 概念**,但 ECC 为 Codex 提供 **first-class 原生安装器**(非插件):一条 sync 脚本把 ECC 的工程纪律、技能、MCP 推进 `~/.codex`。**本仓已选择 codex 采用 ECC 原生 sync** 作为能力来源;cc-switch-cli 只负责 provider / 模型 / 公共配置。
 
-## 与 Claude 端的对齐方式（同 gemini,两层）
+## 能力来源（ECC 原生 sync）
 
-1. **常驻准则层** ← `~/.codex/AGENTS.md`(Codex 的全局 AGENTS 指令),承载方案先行 / 架构连贯 / 函数布局。来源:`memories/agent-principles.md`(与 gemini 的 `GEMINI.md` 同一份)。
-2. **技能层** ← `karpathy-guidelines` + `architectural-harmony` 等,弥补无插件。
+`scripts/sync-ecc-to-codex.sh` 安装:
+
+- `~/.codex/AGENTS.md`(root 通用)+ `.codex/AGENTS.md`(Codex 专属)—— ECC 自带工程纪律
+- 32 个 skills(`.agents/skills/`)
+- 6–7 个 MCP(GitHub / Context7 / Exa / Memory / Playwright / Sequential Thinking,可选 Supabase)
+- 参考配置 `.codex/config.toml`、agent 角色 `.codex/agents/`(explorer / reviewer / docs_researcher)
 
 ## 配置来源（本仓 → 落地）
 
-| 层 | 本仓文件 | 落地 | 机制 |
+| 层 | 来源 | 落地 | 机制 |
 |---|---|---|---|
+| 工程纪律 + 技能 + MCP | ECC 仓库 | `~/.codex/AGENTS.md`、`~/.codex` skills、MCP | `bash scripts/sync-ecc-to-codex.sh` |
 | 公共配置(reasoning 等) | `cc-switch/common-config.codex.toml` | `~/.codex/config.toml` 注入段 | cc-switch 公共配置 |
-| 常驻准则 | `memories/agent-principles.md` | `~/.codex/AGENTS.md` | 直接放置 |
-| 技能 | 见 `cc-switch/skills-matrix.md` | `~/.codex/skills/` | cc-switch-cli skills(`--app codex`) |
 | Provider/模型 | cc-switch providers(codex: 3 个) | `~/.codex/config.toml` | `cc-switch-cli use --app codex <id>` |
 
 ## 公共配置（已采用）
@@ -24,19 +27,22 @@ disable_response_storage = true
 model_catalog_json = "cc-switch-model-catalog.json"
 ```
 
-## 已启用技能（与 Claude 对齐）
-
-`~/.codex/skills/` 现含 7 个:`architectural-harmony`、`karpathy-guidelines`、`skill-creator`、`docx`、`pdf`、`pptx`、`xlsx`。
-
 ## 应用命令（全新机器复现）
 
 ```bash
+# 1) ECC 原生 sync(纪律 + 32 skills + MCP + 参考 config)
+git clone https://github.com/affaan-m/ECC && cd ECC && npm install
+bash scripts/sync-ecc-to-codex.sh                       # --dry-run 预览 / --update-mcp 刷新 MCP
+cd -                                                    # 回到本仓
+
+# 2) cc-switch:公共配置 + provider/模型(注入 ~/.codex/config.toml)
 cc-switch-cli config common set --app codex --file cc-switch/common-config.codex.toml
-cc-switch-cli skills enable karpathy-guidelines  --app codex
-cc-switch-cli skills enable architectural-harmony --app codex
-cc-switch-cli skills sync                                   # -> ~/.codex/skills/
-cp memories/agent-principles.md ~/.codex/AGENTS.md      # 常驻准则
-cc-switch-cli use --app codex <provider-id>                 # 渲染 ~/.codex/config.toml
+cc-switch-cli use --app codex <provider-id>             # 渲染 ~/.codex/config.toml
+
+# 3) 保留本仓准则措辞:追加而非覆盖 ECC 的 AGENTS.md
+cat memories/agent-principles.md >> ~/.codex/AGENTS.md
 ```
 
-> 注:Codex 的全局指令文件按 AGENTS.md 约定放在 `~/.codex/AGENTS.md`。若你的 Codex 版本用不同的全局指令路径,把 `agent-principles.md` 放到对应位置即可(内容不变)。
+> **`~/.codex/config.toml` 双写**:ECC sync 写参考配置、cc-switch-cli 写 provider/reasoning 注入段——二者管不同部分。先 sync 再 cc-switch,让 cc-switch 的注入段最后落定(它负责 provider 切换);**不要**手动 `cp .codex/config.toml ~/.codex/config.toml` 覆盖 cc-switch 的注入段。
+
+> 注:Codex 的全局指令文件按 AGENTS.md 约定放在 `~/.codex/AGENTS.md`(ECC sync 已写入)。若你的 Codex 版本用不同的全局指令路径,把对应文件放到该位置即可。

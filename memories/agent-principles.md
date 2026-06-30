@@ -1,10 +1,10 @@
 # Agent 工程准则（非 Claude 端常驻层）
 
-> Claude 以外的助手(Gemini / Antigravity / Codex)无插件,故 Claude 那边由 **always-on 规则**承载的部分
+> Claude 以外的助手无插件,故 Claude 那边由 **always-on 规则**承载的部分
 > (方案先行 / 架构连贯 / 函数布局)放这里;详细方法论由已安装的**技能**承载(见末尾),本文件不重复抄写。
 >
-> **部署目标**:`~/.gemini/GEMINI.md`(Gemini / Antigravity) 与 `~/.codex/AGENTS.md`(Codex)。
-> 单一来源、两处部署 —— 与 Claude 端(ECC + karpathy 插件 + `rules/`)保持一致。
+> **部署目标**:主要是 `~/.gemini/GEMINI.md`(Gemini / Antigravity)。Codex 已改走 **ECC 原生 sync**(`~/.codex/AGENTS.md` 由 ECC 写入),
+> 本文件对 Codex 仅为可选追加。三端(Claude=ECC+karpathy 插件+`rules/`、Codex=ECC sync、Gemini=本文件+技能)保持同一套工程纪律。
 
 ## 方案先行
 非平凡改动先给出方案/设计,经确认后再动手;改动越大越要如此。不要急着写码,也不要在指令未明确涵盖的范围内擅自扩张。
