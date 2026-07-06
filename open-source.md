@@ -1,79 +1,69 @@
 # 开源插件 & 技能清单（不 vendoring，仅记来源 + 安装方式）
 
-这些内容从各自 marketplace / repo 拉取,本仓**不复制内容**,只记录"装什么、从哪来、怎么装、为何装/不装"。自定义内容见 `rules/`、`skills/architectural-harmony/`。
+这些内容从各自 marketplace / repo 拉取,本仓**不复制内容**,只记录"装什么、从哪来、怎么装、为何装/不装"。自定义内容见 `rules/`、`skills/architectural-coherence/`。
 
 ## Marketplaces（插件市场）
 
 | 名称 | 来源 |
 |---|---|
-| `claude-plugins-official` | github: anthropics/claude-plugins-official |
-| `ecc` | git: <https://github.com/affaan-m/everything-claude-code.git> |
-| `karpathy-skills` | github: forrestchang/andrej-karpathy-skills |
+| `claude-plugins-official` | github: anthropics/claude-plugins-official（内置官方市场,含 superpowers / LSP / context7） |
 
 ```bash
-# 在 claude 会话内(交互式)。本仓 common-config.claude.json 的 extraKnownMarketplaces 已声明 ecc / karpathy-skills,
-# 故全新机器经 cc-switch-cli 应用公共配置后通常无需手动 add;需要手动时的等价命令:
-/plugin marketplace add https://github.com/affaan-m/ECC   # = 市场 ecc(本仓 config 登记为 .../everything-claude-code.git,同一仓库)
-/plugin install ecc@ecc                                   # 安装插件 ecc 到本地缓存(安装 ≠ 启用)
+# 在 claude 会话内(交互式)。superpowers / LSP / context7 都走内置官方市场,无需 marketplace add,
+# 故 common-config.claude.json 已不再需要 extraKnownMarketplaces。
+/plugin install superpowers@claude-plugins-official       # 安装 superpowers 到本地缓存(安装 ≠ 启用)
 # 启用与否由 enabledPlugins 决定,经 `cc-switch-cli use` 渲染进 settings.json;但首次仍需上面的 install 把插件下载到缓存
 ```
 
-## ECC 跨端安装（plugin 仅 Claude;codex 走 ECC 原生 sync,gemini/agy 无全局安装器）
+## superpowers 跨端安装（三端都有原生插件——这正是换掉 ECC 的关键收益）
 
-ECC 不止 Claude——其仓库提供跨 harness 的安装方式,但三端机制不同:
+superpowers 为每个 harness 都提供**原生插件安装**,不再像 ECC 那样三端机制各异(Claude 插件 / Codex sync 脚本 / Gemini 无全局安装器)。装法以 superpowers 官方 README 为准:
 
 | App | 机制 | 命令 | 落地 |
 |---|---|---|---|
-| **Claude** | 插件(plugin) | `/plugin install ecc@ecc`(见上) | 插件 cache + `enabledPlugins` |
-| **Codex** | ECC 原生 sync(first-class) | `npm install && bash scripts/sync-ecc-to-codex.sh` | `~/.codex/AGENTS.md` + 32 skills + 6–7 MCP + 参考 `.codex/config.toml` |
-| **Gemini/agy** | 无全局安装器(仅项目本地) | 项目级 `npx ecc-install --profile minimal --target antigravity` | 全局走 cc-switch-cli 同步技能 + `GEMINI.md`(见 `apps/gemini.md`) |
+| **Claude** | 插件(官方市场) | `/plugin install superpowers@claude-plugins-official` | 插件 cache + `enabledPlugins` |
+| **Codex CLI** | 原生插件(openai/plugins 市场) | 会话内 `/plugins` → 搜 `superpowers` → Install Plugin | Codex 插件面(自带 skills + session bootstrap) |
+| **Antigravity(agy)** | 原生插件 | `agy plugin install https://github.com/obra/superpowers` | 装为插件,启动即跑 session-start hook;重装同命令即更新 |
 
-```bash
-# Codex:在 clone 下来的 ECC 仓库根目录执行
-git clone https://github.com/affaan-m/ECC && cd ECC
-npm install && bash scripts/sync-ecc-to-codex.sh   # --dry-run 预览 / --update-mcp 刷新 MCP
-# 手动等价(仅配置):cp .codex/config.toml ~/.codex/config.toml
-```
-
-> **取舍**:codex 采用 ECC sync 后,`~/.codex/AGENTS.md` 由 ECC 写入、技能也由 ECC 管理(不再以 cc-switch 为唯一来源)。如需保留本仓准则措辞,sync 后 `cat memories/agent-principles.md >> ~/.codex/AGENTS.md`。详见 `apps/codex.md`。
-
-> **脚本归属 / 免 clone**:`install.sh` 与 `sync-ecc-to-codex.sh` 都是 **ECC 仓库内**的脚本。
-> - `install.sh` 有免 clone 版 **`npx ecc-install`**(npm 包 `ecc-universal`,自带资产),`--target` 任意(claude/cursor/antigravity/gemini…)。
-> - 但 **codex 的 `sync-ecc-to-codex.sh` 必须 clone、无 npx 版**:它按仓库相对路径读取 `AGENTS.md`/`.codex/`/`commands/` 并调 `scripts/codex/*`,做 codex 专属的 config.toml/MCP 合并、prompts、git hooks。`npx ecc-install --target codex` 虽能写 `~/.codex`,但 ECC **不推荐**用于 codex(README 只给 clone+sync 或手动 `cp .codex/config.toml`)。
+> **cc-switch 的边界**:superpowers 由各 harness 自带的插件管理器安装,**不经 cc-switch**。cc-switch 只渲染 Claude 的 `enabledPlugins` 条目、provider/模型、公共配置,以及 superpowers 未覆盖的自定义/文档技能。
+> **保留本仓准则措辞**:Codex 侧 `cat memories/agent-principles.md >> ~/.codex/AGENTS.md`;Gemini 侧写入 `~/.gemini/GEMINI.md`。详见 `apps/codex.md` / `apps/gemini.md`。
 
 ## Claude 插件（plugin 是 Claude Code 专属概念）
 
-主框架 = **ECC**。启用集保持精简,避免与 ECC 的 228 skills / 60 agents 重叠。
+主框架 = **superpowers**(自带 14 个工程纪律技能)。启用集保持精简。
 
-### ✅ 启用（5）
+> **插件/技能可按需临时开关**:用不到的随手停用、体量大低频的设 name-only,用到再开——所以本文件不逐一写死谁被禁用。各语言 LSP 尤其如此(见下)。
+
+### ✅ 常驻启用
 
 | 插件 | 市场 | 作用 |
 |---|---|---|
-| `ecc` | ecc | **主框架**:agents / skills / commands / hooks / MCP(context7·exa·github·memory·playwright·sequential-thinking) |
-| `gopls-lsp` | official | Go 语言服务 |
-| `pyright-lsp` | official | Python 语言服务 |
-| `clangd-lsp` | official | C/C++ 语言服务（通用底座,主流语言默认带上） |
-| `context7` | official | 实时库文档（与 ECC 正交;ECC 亦自带 context7 MCP,二者不冲突） |
+| `superpowers` | claude-plugins-official | **主框架**:14 skills(brainstorming / TDD / systematic-debugging / writing-plans / executing-plans / code-review / worktrees 等)+ session-start hook 自动引导 |
+| `context7` | claude-plugins-official | 实时库文档 + context7 MCP |
 
-### ⬜ 已安装但停用（6）— 故意不启用,原因如下
+**各语言 LSP**(`gopls-lsp` / `pyright-lsp` / `clangd-lsp`,均来自 claude-plugins-official):按所用语言**临时启用**——用到哪个开哪个,不在此写死开了哪几个。
 
-| 插件 | 停用原因 |
+### ⬜ 按设计不以插件形式启用 — 原因如下(非临时开关,而是取舍)
+
+| 插件 | 原因 |
 |---|---|
-| `superpowers` | 同类整框架,与 ECC 重叠最严重;主框架定为 ECC 后退场 |
-| `code-simplifier` | ECC 有 refactor-clean / code-simplifier agent 覆盖 |
-| `claude-md-management` | ECC 有 doc-updater;需要时再开 |
-| `andrej-karpathy-skills` | 改用其中的 `karpathy-guidelines` **技能**(经 cc-switch 管理),不整插件 |
-| `playwright` | 后端为主,无 Web 自动化需求;ECC 亦自带 playwright MCP |
+| `ecc` | **前主框架,已退场**:228 skills / 60 agents 过于臃肿,agents/hooks/MCP 面太重;换成更聚焦的 superpowers。marketplace 亦已移除。需要个别 ECC 能力时再单独按需引入 |
+| `andrej-karpathy-skills` | 整套已弃用:其编码纪律(think-before / simplicity / surgical / goal-driven)已被 superpowers + 自定义 `minimal-change` 规则覆盖;marketplace 亦已移除 |
+| `code-simplifier` | 与 superpowers 的评审/重构流程有部分重叠;需要时再开 |
+| `claude-md-management` | 需要时再开 |
+| `playwright` | 后端为主,无 Web 自动化需求 |
 | `telegram` | 本想用其远程控制功能,但当前 team 订阅的 Claude 对远程管理有限制(管理员配置),故未启用 |
 
-> 停用 = 不加载(已从 `enabledPlugins` 移除)。仍想从磁盘彻底卸载:`/plugin` 里 uninstall。
+> 上表是**设计取舍**(为何不把它当常驻插件),与"用不到就临时停用"不同。想从磁盘彻底卸载:`/plugin` 里 uninstall。
 
 ## 开源技能（跨 app，cc-switch 管理）
 
-| 技能 | 来源 | 用途 |
-|---|---|---|
-| `docx` / `pdf` / `pptx` / `xlsx` | anthropics/skills | Office / PDF 文档处理 |
-| `skill-creator` | anthropics/claude-plugins-official | 创建 / 优化 / 评测技能 |
-| `karpathy-guidelines` | forrestchang/andrej-karpathy-skills | LLM 编码行为准则(think-before-coding / simplicity / surgical / goal-driven) |
+> superpowers 自带的 14 个技能**随插件走**,不在此表、也不经 cc-switch;这里只列 superpowers 未覆盖、由 cc-switch 同步到各端的技能。
 
-启用矩阵与命令见 `cc-switch/skills-matrix.md`。
+| 技能 | 来源 | 用途 | Claude 加载态 |
+|---|---|---|---|
+| `docx` / `pdf` / `pptx` / `xlsx` | anthropics/skills | Office / PDF 文档处理 | **name-only**(仅载描述,用到才展开;省 token) |
+| `skill-creator` | anthropics/claude-plugins-official | 创建 / 优化 / 评测技能 | **name-only**(低频) |
+| `architectural-coherence`(自定义) | 本仓 `skills/` | 架构连贯详细手册(与同名 always-on 规则配对) | on |
+
+> **name-only vs on**:Claude Code 特有的技能加载态——`name-only` 只把技能描述放进上下文,正文按需加载,适合体量大、低频的文档技能(docx/pdf/pptx/xlsx);`on` 则常驻。codex/gemini 端无此区分,启用即可用。启用矩阵与命令见 `cc-switch/skills-matrix.md`。

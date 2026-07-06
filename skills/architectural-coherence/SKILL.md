@@ -1,9 +1,9 @@
 ---
-name: architectural-harmony
+name: architectural-coherence
 description: Use when adding a feature to existing code, integrating a new backend/provider/variant, or refactoring — especially the moment you're tempted to drop new code beside the old and wire them together. Ensures the result reads as one coherent design, not a visible old-vs-new seam.
 ---
 
-# Architectural Harmony
+# Architectural Coherence
 
 **Core principle:** after a change lands, the code should read as if the whole thing had been designed that way from the start — no visible seam between "old" and "new."
 

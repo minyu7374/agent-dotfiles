@@ -1,21 +1,23 @@
 # Codex CLI 装配方案
 
-Codex **没有 Claude 的 plugin 概念**,但 ECC 为 Codex 提供 **first-class 原生安装器**(非插件):一条 sync 脚本把 ECC 的工程纪律、技能、MCP 推进 `~/.codex`。**本仓已选择 codex 采用 ECC 原生 sync** 作为能力来源;cc-switch-cli 只负责 provider / 模型 / 公共配置。
+Codex CLI 现在**有原生插件系统**,superpowers 通过官方 `openai/plugins` 市场直接安装——不再需要 ECC 那套 `sync-ecc-to-codex.sh`(clone + npm + 脚本合并)。工程纪律主框架由 superpowers 插件承载;cc-switch-cli 只负责 provider / 模型 / 公共配置;本仓的自定义准则追加进 `~/.codex/AGENTS.md`。
 
-## 能力来源（ECC 原生 sync）
+## 能力来源
 
-`scripts/sync-ecc-to-codex.sh` 安装:
-
-- `~/.codex/AGENTS.md`(root 通用)+ `.codex/AGENTS.md`(Codex 专属)—— ECC 自带工程纪律
-- 32 个 skills(`.agents/skills/`)
-- 6–7 个 MCP(GitHub / Context7 / Exa / Memory / Playwright / Sequential Thinking,可选 Supabase)
-- 参考配置 `.codex/config.toml`、agent 角色 `.codex/agents/`(explorer / reviewer / docs_researcher)
+| 来源 | 内容 |
+|---|---|
+| **superpowers 原生插件**(openai/plugins 市场) | 14 个工程纪律技能(brainstorming / TDD / systematic-debugging / writing-plans / executing-plans / code-review / worktrees 等)+ session bootstrap;随插件走 |
+| **`~/.codex/AGENTS.md`**(自定义准则) | 追加 `memories/agent-principles.md`——方案先行 / 架构连贯 / 函数布局的常驻总则 |
+| **cc-switch 技能** | superpowers 未覆盖的补充:`architectural-coherence`(架构连贯手册)等,经 `cc-switch-cli skills --app codex` 同步 |
+| **cc-switch 公共/Provider 配置** | reasoning / provider / 模型,注入 `~/.codex/config.toml` |
 
 ## 配置来源（本仓 → 落地）
 
 | 层 | 来源 | 落地 | 机制 |
 |---|---|---|---|
-| 工程纪律 + 技能 + MCP | ECC 仓库 | `~/.codex/AGENTS.md`、`~/.codex` skills、MCP | `bash scripts/sync-ecc-to-codex.sh` |
+| 工程纪律主框架 | openai/plugins 市场 | Codex 插件面 | 会话内 `/plugins` → 搜 `superpowers` → Install Plugin |
+| 常驻准则 | `memories/agent-principles.md` | `~/.codex/AGENTS.md`(追加) | 手动 `cat ... >> ~/.codex/AGENTS.md` |
+| 补充技能 | `cc-switch/skills-matrix.md` | Codex 技能目录 | `cc-switch-cli skills enable <name> --app codex` + `sync` |
 | 公共配置(reasoning 等) | `cc-switch/common-config.codex.toml` | `~/.codex/config.toml` 注入段 | cc-switch 公共配置 |
 | Provider/模型 | cc-switch providers(codex: 3 个) | `~/.codex/config.toml` | `cc-switch-cli use --app codex <id>` |
 
@@ -30,21 +32,21 @@ model_catalog_json = "cc-switch-model-catalog.json"
 ## 应用命令（全新机器复现）
 
 ```bash
-# 1) ECC 原生 sync(纪律 + 32 skills + MCP + 参考 config)
-git clone https://github.com/affaan-m/ECC && cd ECC && npm install
-bash scripts/sync-ecc-to-codex.sh                       # --dry-run 预览 / --update-mcp 刷新 MCP
-cd -                                                    # 回到本仓
+# 1) superpowers 原生插件(工程纪律主框架)
+#    在 Codex CLI 会话内: /plugins → 搜 superpowers → 选 Install Plugin
 
 # 2) cc-switch:公共配置 + provider/模型(注入 ~/.codex/config.toml)
 cc-switch-cli config common set --app codex --file cc-switch/common-config.codex.toml
 cc-switch-cli use --app codex <provider-id>             # 渲染 ~/.codex/config.toml
 
-# 3) 保留本仓准则措辞:追加而非覆盖 ECC 的 AGENTS.md
+# 3) 常驻准则:追加进 AGENTS.md(现由本仓维护,不再由 ECC 写)
 cat memories/agent-principles.md >> ~/.codex/AGENTS.md
+
+# 4) 补充技能:superpowers 未覆盖的自定义技能
+cc-switch-cli skills enable architectural-coherence --app codex   # 自定义技能需先 import-from-apps 纳入 SSOT
+cc-switch-cli skills sync
 ```
 
-> **`~/.codex/config.toml` 双写**:ECC sync 写参考配置、cc-switch-cli 写 provider/reasoning 注入段——二者管不同部分。先 sync 再 cc-switch,让 cc-switch 的注入段最后落定(它负责 provider 切换);**不要**手动 `cp .codex/config.toml ~/.codex/config.toml` 覆盖 cc-switch 的注入段。
+> **`~/.codex/AGENTS.md` 现在是本仓资产**:ECC 退场后不再有脚本自动写它。全局指令按 AGENTS.md 约定放在 `~/.codex/AGENTS.md`,内容 = `memories/agent-principles.md`(可按需增补)。superpowers 的纪律来自插件,与这份 AGENTS.md 互补、不冲突。
 
-> **脚本归属(须 clone)**:`sync-ecc-to-codex.sh` 是 **ECC 仓库内**的脚本,按仓库相对路径读取 `AGENTS.md`/`.codex/`/`commands/` 并调 `scripts/codex/*` 辅助脚本——**必须在 clone 出来的 ECC 仓库里跑,没有 `npx` 免 clone 版**。这点和 `install.sh`(可用 `npx ecc-install`)不同;ECC 也只为 codex 提供 clone+sync 或手动 `cp .codex/config.toml`,不推荐 `npx ecc-install --target codex`。
-
-> 注:Codex 的全局指令文件按 AGENTS.md 约定放在 `~/.codex/AGENTS.md`(ECC sync 已写入)。若你的 Codex 版本用不同的全局指令路径,把对应文件放到该位置即可。
+> **`~/.codex/config.toml` 归 cc-switch**:provider / reasoning 注入段由 `cc-switch-cli use --app codex` 写入;superpowers 是插件,不碰 config.toml。**不要**手动覆盖 cc-switch 的注入段。

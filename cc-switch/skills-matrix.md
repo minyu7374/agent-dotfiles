@@ -5,21 +5,24 @@ cc-switch 把技能(SSOT)按"每个 app 是否启用"同步到各自的技能目
 - Codex → Codex 的技能目录
 - Gemini → `~/.gemini/skills/`（**Antigravity / agy 直接读 `~/.gemini` 下的 skills 与 GEMINI.md**，故 gemini 列即 agy）
 
+> 本表只管 **superpowers 未覆盖、由 cc-switch 同步**的技能。superpowers 自带的 14 个技能随各端插件走,不在此表。
+
 | 技能 | 来源 | claude | codex | gemini(=agy) | 说明 |
 |---|---|:---:|:---:|:---:|---|
-| `docx` | anthropics/skills | ✅ | ✅ | ✅ | Word 文档读写 |
-| `pdf` | anthropics/skills | ✅ | ✅ | ✅ | PDF 处理 |
-| `pptx` | anthropics/skills | ✅ | ✅ | ✅ | 幻灯片 |
-| `xlsx` | anthropics/skills | ✅ | ✅ | ✅ | 表格 |
-| `skill-creator` | anthropics/claude-plugins-official | ✅ | ✅ | ✅ | 创建/优化技能 |
-| `karpathy-guidelines` | forrestchang/andrej-karpathy-skills | ✅ | ✅ | ✅ | 编码行为准则;非 Claude 端用它弥补"无插件" |
-| `architectural-harmony` | **自定义**(本仓 `skills/`,已纳入 cc-switch SSOT) | ✅ | ✅ | ✅ | 改动后架构连贯性的实施手册 |
+| `docx` | anthropics/skills | ◐ | ✅ | ✅ | Word 文档读写 |
+| `pdf` | anthropics/skills | ◐ | ✅ | ✅ | PDF 处理 |
+| `pptx` | anthropics/skills | ◐ | ✅ | ✅ | 幻灯片 |
+| `xlsx` | anthropics/skills | ◐ | ✅ | ✅ | 表格 |
+| `skill-creator` | anthropics/claude-plugins-official | ◐ | ✅ | ✅ | 创建/优化技能 |
+| `architectural-coherence` | **自定义**(本仓 `skills/`,已纳入 cc-switch SSOT) | ✅ | ✅ | ✅ | 架构连贯详细手册;superpowers 无等价物。与 Claude 同名 always-on 规则配对(rule=总则 / skill=手册) |
 
-图例:✅ 启用 / ⬜ 未启用。**当前三端(claude/codex/gemini=agy)全部一致启用。**
+图例:✅ 启用(常驻) / ◐ 启用但 **name-only**(Claude 仅载描述、正文按需展开,省 token;codex/gemini 无此区分,等同启用) / ⬜ 未启用。**三端均启用,差异仅在 Claude 把体量大/低频的技能(文档技能 + `skill-creator`)设为 name-only。**
 
-> **Codex 例外**:本仓已让 codex 采用 **ECC 原生 sync**(见 `apps/codex.md`),其技能由 ECC 的 32 个管理。上表 codex 列只表示"cc-switch 仍可选同步到 codex 的自定义/补充技能"(如 ECC 未覆盖的 `architectural-harmony`),不再是 codex 技能的唯一来源。Claude 与 Gemini 仍以 cc-switch 为准。
+> 这些状态**可按需临时调整**(`cc-switch-cli skills enable/disable`,或在客户端里把某技能切成 name-only / 停用)。
 
-> **对齐说明**:Claude 端的工程准则来自插件(ECC/karpathy)+ always-on 规则;**Codex 经 ECC 原生 sync**(`~/.codex/AGENTS.md` + ECC skills,见 `apps/codex.md`);Gemini/agy 无插件,ECC 无全局安装器(install.sh 仅项目本地,见 `apps/gemini.md`),故全局用**两层**对齐:① 把 `karpathy-guidelines` 与 `architectural-harmony` **作为技能**启用(上表);② 常驻准则文件 `~/.gemini/GEMINI.md`(源自 `memories/agent-principles.md`)承载 Claude 那边由规则承载的"方案先行/架构连贯/函数布局"总则。
+> **主框架不在此表**:三端的工程纪律主要来自 **superpowers 原生插件**(Claude `enabledPlugins` / Codex `openai/plugins` / Antigravity `agy plugin install`,见 `apps/*.md`),其 14 技能随插件走、不经 cc-switch。本表是 superpowers 之外的补充层。
+
+> **对齐说明**:三端载体已统一为 superpowers 插件;cc-switch 这一层负责补齐 superpowers 未覆盖的部分——① `architectural-coherence` 作为技能同步到三端(上表,superpowers 无等价物);② Claude 侧 `~/.claude/rules/` 的 always-on 规则(`architectural-coherence`/`minimal-change`/`function-layout`,Claude Code 原生加载);③ 常驻准则文件 `~/.gemini/GEMINI.md` 与 `~/.codex/AGENTS.md`(源自 `memories/agent-principles.md`,已覆盖上述规则,供无原生 rules 的端使用)。
 
 ## 维护命令（cc-switch）
 
