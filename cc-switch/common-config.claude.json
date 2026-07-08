@@ -11,6 +11,13 @@
     "clangd-lsp@claude-plugins-official": false,
     "pyright-lsp@claude-plugins-official": false
   },
+  "skillOverrides": {
+    "xlsx": "name-only",
+    "pptx": "name-only",
+    "pdf": "name-only",
+    "docx": "name-only",
+    "skill-creator": "name-only"
+  },
   "effortLevel": "high",
   "env": {
     "ENABLE_TOOL_SEARCH": "true"
