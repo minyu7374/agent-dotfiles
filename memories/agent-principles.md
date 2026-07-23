@@ -19,5 +19,8 @@ Once the shape is decided, implement it with the smallest change: touch only wha
 ## Function layout
 Within a file: exported/public items first; callers before callees (top-down in call order); a single-use helper sits right after its caller. If an existing file already follows another consistent layout, keep it — don't reorder on your own.
 
+## Technical writing style
+For written technical output (docs, comments, commit / PR messages, explanations), use plain, direct language and the established engineering term. Avoid literary flourish, metaphor, and invented / translationese jargon that replaces a plain word (e.g. 旋钮 / 裁剪 / 选线). Be concrete: give the number, path, or error text, not an adjective.
+
 ---
 **Skills relied on** (synced by cc-switch into each app's skills dir): `architectural-coherence`, `skill-creator`, `docx`/`pdf`/`pptx`/`xlsx`.

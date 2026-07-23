@@ -34,6 +34,7 @@ Everything else is open-source. The repo's own content is just:
 | `rules/architectural-coherence.md` | always-on rule (Claude); the one verified gap — terse general rule, points to the skill |
 | `rules/minimal-change.md` | always-on rule (Claude); surgical/minimal-diff discipline, explicitly subordinate to architectural-coherence (coherence first, then minimal). Replaces the retired karpathy-guidelines skill |
 | `rules/function-layout.md` | always-on rule (Claude); in-file function ordering convention |
+| `rules/technical-writing.md` | always-on rule (Claude); plain engineering prose for docs/comments/messages — no literary/metaphor/translationese wording. Scoped to written output, doesn't touch conversational tone |
 | `skills/architectural-coherence/` | the detailed playbook behind `architectural-coherence` (on-demand, all three apps) |
 | `memories/agent-principles.md` | resident principles → `~/.gemini/GEMINI.md` (Gemini) and appended to `~/.codex/AGENTS.md` (Codex). Keep it app-neutral. |
 | `hooks/diagnose-gate.sh` | optional PreToolUse hook (currently **shelved** — see `hooks/README.md`); forces root-cause-first on diagnostic prompts. Agent-facing text in English |
