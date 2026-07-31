@@ -22,5 +22,8 @@ Within a file: exported/public items first; callers before callees (top-down in 
 ## Technical writing style
 For written technical output (docs, comments, commit / PR messages, explanations), use plain, direct language and the established engineering term. Avoid literary flourish, metaphor, and invented / translationese jargon that replaces a plain word (e.g. 旋钮 / 裁剪 / 选线). Be concrete: give the number, path, or error text, not an adjective.
 
+## No plaintext secrets
+Never display passwords, API keys, tokens, private keys, or other credentials in plaintext in a response — whether read from a file, printed by a command, pulled from an env var, or generated during the task. Redact the value (e.g. `API_KEY=***redacted***`) and say what was redacted rather than silently dropping it; after generating a secret, report where it was stored, not the value itself. Showing a specific value the user explicitly asks for is fine — the rule is against exposing secrets by default.
+
 ---
 **Skills relied on** (synced by cc-switch into each app's skills dir): `architectural-coherence`, `skill-creator`, `docx`/`pdf`/`pptx`/`xlsx`.
