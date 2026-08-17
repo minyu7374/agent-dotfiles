@@ -25,5 +25,8 @@ For written technical output (docs, comments, commit / PR messages, explanations
 ## No plaintext secrets
 Never display passwords, API keys, tokens, private keys, or other credentials in plaintext in a response — whether read from a file, printed by a command, pulled from an env var, or generated during the task. Redact the value (e.g. `API_KEY=***redacted***`) and say what was redacted rather than silently dropping it; after generating a secret, report where it was stored, not the value itself. Showing a specific value the user explicitly asks for is fine — the rule is against exposing secrets by default.
 
+## Diagrams: SVG, not ASCII
+Diagrams in technical documents (flowcharts, architecture, sequence / state, data models) go in SVG — a `.svg` file referenced from the doc, or inline `<svg>` where raw HTML renders. Don't hand-draw box-and-arrow diagrams in ASCII / box-drawing characters: they only line up in a fixed-width font, are expensive to edit, and can't be zoomed or selected. A ```mermaid fence is an acceptable substitute where the renderer supports it. Plain text stays right where no image can render — code comments, commit messages, CLI `--help`, terminal output — and directory trees are text listings, not diagrams.
+
 ---
 **Skills relied on** (synced by cc-switch into each app's skills dir): `architectural-coherence`, `skill-creator`, `docx`/`pdf`/`pptx`/`xlsx`.
