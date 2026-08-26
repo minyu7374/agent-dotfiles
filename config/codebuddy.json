@@ -1,0 +1,27 @@
+{
+  "voice": {
+    "enabled": true,
+    "mode": "hold"
+  },
+  "voiceEnabled": true,
+  "enabledPlugins": {
+    "superpowers@codebuddy-plugins-official": true,
+    "superpowers@claude-plugins-official": true
+  },
+  "skillOverrides": {
+    "xlsx": "name-only",
+    "pptx": "name-only",
+    "pdf": "name-only",
+    "docx": "name-only",
+    "skill-creator": "name-only"
+  },
+  "effortLevel": "high",
+  "env": {
+    "ENABLE_TOOL_SEARCH": "true"
+  },
+  "statusLine": {
+    "type": "command",
+    "command": "bash /Users/minyu/.codebuddy/statusline-command.sh"
+  },
+  "skipWorkflowUsageWarning": true
+}

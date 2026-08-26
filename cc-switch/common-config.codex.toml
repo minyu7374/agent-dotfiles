@@ -1,5 +1,0 @@
-# cc-switch common config snippet for Codex CLI (~/.codex/config.toml 注入段)
-# Codex 没有 Claude 的 plugin 概念,这里只承载模型/行为级配置;能力靠 skills(见 skills-matrix.md)。
-model_reasoning_effort = "high"
-disable_response_storage = true
-model_catalog_json = "cc-switch-model-catalog.json"

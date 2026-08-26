@@ -1,9 +1,8 @@
 # Agent engineering principles (resident layer for non-Claude harnesses)
 
-> All three harnesses now share **superpowers** as the primary framework (native plugin). But the parts Claude carries as **always-on rules** (`~/.claude/rules/`, loaded natively) — plan-first / architectural coherence / minimal change / function layout — don't ride along with superpowers, so they live here for the other harnesses. Detailed methodology comes from installed **skills** (see end); this file doesn't restate them.
+> The engineering discipline that Claude carries as **always-on rules** (`~/.claude/rules/`, loaded natively) — plan-first / architectural coherence / minimal change / function layout — doesn't ride along with superpowers, so it lives here for the harnesses that load instructions from a single markdown file. Deployed by `scripts/sync.sh`. Detailed methodology comes from installed **skills** (see end); this file doesn't restate them.
 >
-> **Deploy targets**: `~/.gemini/GEMINI.md` (Gemini / Antigravity) and `~/.codex/AGENTS.md` (Codex, appended).
-> All three (Claude = superpowers plugin + `rules/`; Codex = superpowers plugin + this file; Gemini = superpowers plugin + this file + skills) keep the same engineering discipline.
+> **Deploy targets**: `~/.claude/rules/` (Claude), `~/.gemini/GEMINI.md` (Gemini / Antigravity), `~/.codex/AGENTS.md` (Codex), `~/.config/opencode/AGENTS.md` (OpenCode), `~/.codebuddy/AGENTS.md` (CodeBuddy).
 
 ## Plan first
 For non-trivial changes, present a plan/design and get sign-off before writing code — the bigger the change, the more this matters. Don't rush into code, and don't expand scope beyond what the request explicitly covers.
@@ -29,4 +28,4 @@ Never display passwords, API keys, tokens, private keys, or other credentials in
 Diagrams in technical documents (flowcharts, architecture, sequence / state, data models) go in SVG — a `.svg` file referenced from the doc, or inline `<svg>` where raw HTML renders. Don't hand-draw box-and-arrow diagrams in ASCII / box-drawing characters: they only line up in a fixed-width font, are expensive to edit, and can't be zoomed or selected. A ```mermaid fence is an acceptable substitute where the renderer supports it. Plain text stays right where no image can render — code comments, commit messages, CLI `--help`, terminal output — and directory trees are text listings, not diagrams.
 
 ---
-**Skills relied on** (synced by cc-switch into each app's skills dir): `architectural-coherence`, `skill-creator`, `docx`/`pdf`/`pptx`/`xlsx`.
+**Skills relied on**: the `architectural-coherence` skill (custom, in this repo's `skills/`, synced by `scripts/sync.sh` into each app's skills dir). Open-source doc skills (`docx`/`pdf`/`pptx`/`xlsx`, `skill-creator`) install separately per app — see `open-source.md`.

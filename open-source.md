@@ -7,15 +7,17 @@
 | 名称 | 来源 |
 |---|---|
 | `claude-plugins-official` | github: anthropics/claude-plugins-official（内置官方市场,含 superpowers / LSP / context7） |
+| `openai/plugins` | Codex CLI 插件市场（superpowers 原生插件） |
 
 ```bash
 # 在 claude 会话内(交互式)。superpowers / LSP / context7 都走内置官方市场,无需 marketplace add,
-# 故 common-config.claude.json 已不再需要 extraKnownMarketplaces。
+# 故 config/claude.json 里不需要 extraKnownMarketplaces。
 /plugin install superpowers@claude-plugins-official       # 安装 superpowers 到本地缓存(安装 ≠ 启用)
-# 启用与否由 enabledPlugins 决定,经 `cc-switch-cli use` 渲染进 settings.json;但首次仍需上面的 install 把插件下载到缓存
+# 启用与否由 config/claude.json 的 enabledPlugins 决定,经 `./scripts/sync.sh` 渲染进 settings.json;
+# 但首次仍需上面的 install 把插件下载到缓存
 ```
 
-## superpowers 跨端安装（三端都有原生插件——这正是换掉 ECC 的关键收益）
+## superpowers 跨端安装（各端都有原生插件——这正是换掉 ECC 的关键收益）
 
 superpowers 为每个 harness 都提供**原生插件安装**,不再像 ECC 那样三端机制各异(Claude 插件 / Codex sync 脚本 / Gemini 无全局安装器)。装法以 superpowers 官方 README 为准:
 
@@ -25,8 +27,8 @@ superpowers 为每个 harness 都提供**原生插件安装**,不再像 ECC 那�
 | **Codex CLI** | 原生插件(openai/plugins 市场) | 会话内 `/plugins` → 搜 `superpowers` → Install Plugin | Codex 插件面(自带 skills + session bootstrap) |
 | **Antigravity(agy)** | 原生插件 | `agy plugin install https://github.com/obra/superpowers` | 装为插件,启动即跑 session-start hook;重装同命令即更新 |
 
-> **cc-switch 的边界**:superpowers 由各 harness 自带的插件管理器安装,**不经 cc-switch**。cc-switch 只渲染 Claude 的 `enabledPlugins` 条目、provider/模型、公共配置,以及 superpowers 未覆盖的自定义/文档技能。
-> **保留本仓准则措辞**:Codex 侧 `cat memories/agent-principles.md >> ~/.codex/AGENTS.md`;Gemini 侧写入 `~/.gemini/GEMINI.md`。详见 `apps/codex.md` / `apps/gemini.md`。
+> **本仓的边界**:superpowers 由各 harness 自带的插件管理器安装,**不经本仓**。本仓(`scripts/sync.sh`)只管 Claude 的 `enabledPlugins` 条目、公共配置快照,以及 superpowers 未覆盖的自定义技能(architectural-coherence)。provider / 模型由各 agent 官方原生配置,本仓不接管。
+> **常驻准则的落地**:`scripts/sync.sh` 把 `memories/agent-principles.md` 写入 `~/.gemini/GEMINI.md`、`~/.codex/AGENTS.md`(标记块)、`~/.config/opencode/AGENTS.md`、`~/.codebuddy/AGENTS.md`。详见 `apps/*.md`。
 
 ## Claude 插件（plugin 是 Claude Code 专属概念）
 
@@ -56,9 +58,9 @@ superpowers 为每个 harness 都提供**原生插件安装**,不再像 ECC 那�
 
 > 上表是**设计取舍**(为何不把它当常驻插件),与"用不到就临时停用"不同。想从磁盘彻底卸载:`/plugin` 里 uninstall。
 
-## 开源技能（跨 app，cc-switch 管理）
+## 开源技能（跨 app，随 anthropics/skills 安装）
 
-> superpowers 自带的 14 个技能**随插件走**,不在此表、也不经 cc-switch;这里只列 superpowers 未覆盖、由 cc-switch 同步到各端的技能。
+> superpowers 自带的 14 个技能**随插件走**,不在此表;这里只列 superpowers 未覆盖、由本仓记录安装方式的技能。安装方式与启用矩阵见 `SKILLS.md`。
 
 | 技能 | 来源 | 用途 | Claude 加载态 |
 |---|---|---|---|
@@ -66,4 +68,4 @@ superpowers 为每个 harness 都提供**原生插件安装**,不再像 ECC 那�
 | `skill-creator` | anthropics/claude-plugins-official | 创建 / 优化 / 评测技能 | **name-only**(低频) |
 | `architectural-coherence`(自定义) | 本仓 `skills/` | 架构连贯详细手册(与同名 always-on 规则配对) | on |
 
-> **name-only vs on**:Claude Code 特有的技能加载态——`name-only` 只把技能描述放进上下文,正文按需加载,适合体量大、低频的文档技能(docx/pdf/pptx/xlsx);`on` 则常驻。codex/gemini 端无此区分,启用即可用。启用矩阵与命令见 `cc-switch/skills-matrix.md`。
+> **name-only vs on**:Claude Code 特有的技能加载态——`name-only` 只把技能描述放进上下文,正文按需加载,适合体量大、低频的文档技能(docx/pdf/pptx/xlsx);`on` 则常驻。codex/gemini/opencode 端无此区分,启用即可用。name-only 覆盖由 `scripts/sync.sh` 从 `config/claude.json` 写入。
