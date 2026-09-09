@@ -1,17 +1,16 @@
-# No autonomous commits
+# Commit authorization and AI provenance
 
-**Never run `git commit` (or `git commit --amend`, squash, or any
-history-writing operation) unless the user explicitly asks for a commit in
-their current request.**
+Do not commit, amend, squash, or otherwise rewrite history unless the user
+explicitly requests it in the current request. Editing, branching, or passing
+checks never authorize a commit. Authorization covers one commit for the
+current logical change and then expires; never clean up history on your own.
 
-- Authorization to create a branch, make changes, or fix something is NOT
-  authorization to commit. "Create a branch and do X" means branch + edit, nothing more.
-- My own checks passing (build, lint, doctor, tests) is not "verified".
-  Verification means the USER has exercised the change in real usage and is
-  satisfied. Until then, all work stays uncommitted in the working tree —
-  through every polish iteration, however long that takes.
-- Do not "clean up" git history on my own initiative either — un-committing
-  (when asked) is fine; re-committing "more cleanly" is still an autonomous
-  commit.
-- When the user does ask for a commit: one consolidated commit per logical
-  change, not a main commit plus fix-up commits for my own afterthoughts.
+An agent-created commit has one concise factual subject and one trailer:
+
+```text
+Co-authored-by: AGENT MODEL <EMAIL>
+```
+
+For Codex use `Codex MODEL <noreply@openai.com>`, with the actual runtime model;
+omit the model when unavailable rather than guessing. Other agents require a
+documented official or project-owned identity; otherwise ask the user.

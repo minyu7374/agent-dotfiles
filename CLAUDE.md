@@ -20,7 +20,7 @@ The repo content is almost entirely Chinese markdown. The primary entry point an
 Five assistants are kept aligned on the same engineering discipline (plan-first / architectural coherence / function layout / coding discipline). The carrier is now **uniform**: superpowers installs natively on each harness, then a thin custom layer (rules / AGENTS.md / GEMINI.md / the `architectural-coherence` skill) adds the gaps superpowers doesn't cover. `scripts/sync.sh` moves the custom layer from this repo into each harness:
 
 - **Claude** — superpowers **plugin** (`superpowers@claude-plugins-official`, via `enabledPlugins` in `config/claude.json`) **+ always-on rules** in `~/.claude/rules/` (loaded **natively** by Claude Code's memory feature — no plugin needed).
-- **Codex** — superpowers installs as a **native Codex plugin** from the official `openai/plugins` marketplace (`/plugins` → search `superpowers` → Install). The custom principles are kept in a managed marker block in `~/.codex/AGENTS.md`; behavioral config (`model_reasoning_effort`, `disable_response_storage`) lives in a managed block of `~/.codex/config.toml`.
+- **Codex** — superpowers installs as a **native Codex plugin** from the official `openai/plugins` marketplace (`/plugins` → search `superpowers` → Install). The custom principles are kept in a managed marker block in `~/.codex/AGENTS.md`; `~/.codex/config.toml` remains under Codex's native management.
 - **Gemini (=Antigravity)** — superpowers installs as an Antigravity **plugin**: `agy plugin install https://github.com/obra/superpowers`. The custom layer stays on `~/.gemini/GEMINI.md` (from `memories/agent-principles.md`) + the synced `architectural-coherence` skill. See `apps/gemini.md`.
 - **OpenCode** — global instructions in `~/.config/opencode/AGENTS.md`, skills in `~/.config/opencode/skills/`, config snapshot in `config/opencode.json`. See `apps/opencode.md`.
 - **CodeBuddy** — Claude-compatible architecture (`~/.codebuddy/settings.json`, `~/.codebuddy/rules/`, `~/.codebuddy/skills/`, `~/.codebuddy/AGENTS.md`). Superpowers installed from marketplace, rules loaded natively. See `apps/codebuddy.md`.
@@ -43,7 +43,7 @@ Everything else is open-source. The repo's own content is just:
 | `rules/language.md` | always-on rule (Claude / CodeBuddy); respond in Simplified Chinese |
 | `skills/architectural-coherence/` | the detailed playbook behind `architectural-coherence` (on-demand, all apps) |
 | `memories/agent-principles.md` | resident principles → `~/.gemini/GEMINI.md` (Gemini), `~/.codex/AGENTS.md` (Codex, marker block), `~/.config/opencode/AGENTS.md` (OpenCode), `~/.codebuddy/AGENTS.md` (CodeBuddy). Keep it app-neutral. |
-| `config/` | per-app public-config snapshots, applied by `scripts/sync.sh` (JSON merge for Claude/CodeBuddy, managed blocks for Codex, copy for OpenCode) |
+| `config/` | per-app public-config snapshots, applied by `scripts/sync.sh` (JSON merge for Claude/CodeBuddy, copy for OpenCode) |
 | `scripts/sync.sh` | the one-command sync that applies the custom layer to all five agents |
 | `hooks/diagnose-gate.sh` | optional PreToolUse hook (currently **shelved** — see `hooks/README.md`); forces root-cause-first on diagnostic prompts. Agent-facing text in English |
 

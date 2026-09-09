@@ -10,7 +10,7 @@
 # 由各 agent 官方原生配置(Claude `claude` 登录 / Codex `codex login` / OpenCode opencode.json /
 # Antigravity 应用内设置 / CodeBuddy 应用内设置),脚本不接管。
 #
-# 依赖:jq(JSON 合并);python3(Codex 的托管块替换;macOS 自带)。
+# 依赖:jq(JSON 合并);python3(Codex 的常驻准则托管块替换;macOS 自带)。
 set -euo pipefail
 shopt -s nullglob
 
@@ -175,7 +175,6 @@ sync_claude() {
 
 sync_codebuddy() {
   echo "## CodeBuddy"
-  cp_principles "$CODEBUDDY_DIR/AGENTS.md"
   sync_rules "$CODEBUDDY_DIR/rules"
   sync_skills "$CODEBUDDY_DIR/skills"
   merge_settings_json "$CODEBUDDY_DIR/settings.json" "$REPO_ROOT/config/codebuddy.json"
@@ -193,8 +192,6 @@ sync_codex() {
   replace_block "$CODEX_DIR/AGENTS.md" "$PRINCIPLES_SRC" \
     '<!-- agent-dotfiles:begin -->' '<!-- agent-dotfiles:end -->'
   sync_skills "$CODEX_DIR/skills"
-  replace_block "$CODEX_DIR/config.toml" "$REPO_ROOT/config/codex.toml" \
-    '# >>> agent-dotfiles:begin >>>' '# <<< agent-dotfiles:end <<<'
 }
 
 sync_opencode() {

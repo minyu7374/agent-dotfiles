@@ -1,31 +1,55 @@
-# Agent engineering principles (resident layer for non-Claude harnesses)
+# Engineering rules
 
-> The engineering discipline that Claude carries as **always-on rules** (`~/.claude/rules/`, loaded natively) — plan-first / architectural coherence / minimal change / function layout — doesn't ride along with superpowers, so it lives here for the harnesses that load instructions from a single markdown file. Deployed by `scripts/sync.sh`. Detailed methodology comes from installed **skills** (see end); this file doesn't restate them.
->
-> **Deploy targets**: `~/.claude/rules/` (Claude), `~/.gemini/GEMINI.md` (Gemini / Antigravity), `~/.codex/AGENTS.md` (Codex), `~/.config/opencode/AGENTS.md` (OpenCode), `~/.codebuddy/AGENTS.md` (CodeBuddy).
+## Plan
 
-## Plan first
-For non-trivial changes, present a plan/design and get sign-off before writing code — the bigger the change, the more this matters. Don't rush into code, and don't expand scope beyond what the request explicitly covers.
+For non-trivial changes, present a proportional design and wait for approval.
+Do not expand scope.
 
-## Architectural coherence
-After a change lands, the code should read as if it had been designed that way from the start — no visible seam between old and new. When extending existing code, build toward the shape the module would have if the feature had been required on day one; "minimize the change" holds only when the existing structure already fits — don't bolt new code beside the old just to shrink the diff.
-(Full playbook: the `architectural-coherence` skill.)
+## Shape, then diff
 
-## Minimal change (architectural coherence first)
-Once the shape is decided, implement it with the smallest change: touch only what the task needs; don't refactor / rename / reorder unrelated code; match the surrounding style; remove only the orphans your own change creates (flag pre-existing dead code, don't delete it); nothing speculative (KISS / YAGNI).
-**Precedence — coherence first, then minimal change**: this rule is subordinate to architectural coherence. First settle the coherent shape (reshape when needed — a coherent larger diff beats a bolted-on small one), then make that shape minimal. A "smallest diff" must not buy an architectural seam, and "coherence" must not license touching unrelated code beyond what the shape needs.
+Design extensions as if required from the start; coherence precedes a small
+diff. Reshape only the affected design when necessary, then change only what it
+requires. Match nearby style; do not refactor, rename, reformat, or add
+speculative behavior outside scope. Remove only orphans created by the change.
 
-## Function layout
-Within a file: exported/public items first; callers before callees (top-down in call order); a single-use helper sits right after its caller. If an existing file already follows another consistent layout, keep it — don't reorder on your own.
+## Source layout
 
-## Technical writing style
-For written technical output (docs, comments, commit / PR messages, explanations), use plain, direct language and the established engineering term. Avoid literary flourish, metaphor, and invented / translationese jargon that replaces a plain word (e.g. 旋钮 / 裁剪 / 选线). Be concrete: give the number, path, or error text, not an adjective.
+In created or modified files, public items precede private ones; callers precede
+callees; a single-use helper follows its caller, and a shared helper follows its
+last caller. Preserve an existing consistent layout.
 
-## No plaintext secrets
-Never display passwords, API keys, tokens, private keys, or other credentials in plaintext in a response — whether read from a file, printed by a command, pulled from an env var, or generated during the task. Redact the value (e.g. `API_KEY=***redacted***`) and say what was redacted rather than silently dropping it; after generating a secret, report where it was stored, not the value itself. Showing a specific value the user explicitly asks for is fine — the rule is against exposing secrets by default.
+## Communication
 
-## Diagrams: SVG, not ASCII
-Diagrams in technical documents (flowcharts, architecture, sequence / state, data models) go in SVG — a `.svg` file referenced from the doc, or inline `<svg>` where raw HTML renders. Don't hand-draw box-and-arrow diagrams in ASCII / box-drawing characters: they only line up in a fixed-width font, are expensive to edit, and can't be zoomed or selected. A ```mermaid fence is an acceptable substitute where the renderer supports it. Plain text stays right where no image can render — code comments, commit messages, CLI `--help`, terminal output — and directory trees are text listings, not diagrams.
+Use Simplified Chinese in conversation, explanations, and summaries. Write
+technical material plainly: lead with the result, use established terms and
+exact facts, and avoid literary flourish, metaphor, and translationese.
 
----
-**Skills relied on**: the `architectural-coherence` skill (custom, in this repo's `skills/`, synced by `scripts/sync.sh` into each app's skills dir). Open-source doc skills (`docx`/`pdf`/`pptx`/`xlsx`, `skill-creator`) install separately per app — see `open-source.md`.
+## Secrets
+
+Never reveal credentials in plaintext by default. Redact values and say so;
+after generating a secret, report its storage location, not its value. Reveal a
+specific value only when the user explicitly requests it.
+
+## Diagrams
+
+Use SVG for technical-document diagrams; never use ASCII or box-drawing.
+Mermaid requires an explicit user request or an SVG-incapable target; state why.
+Plain text is appropriate for code comments, terminal output, CLI help, and
+directory listings.
+
+## Git history
+
+Do not commit, amend, squash, or rewrite history without an explicit request in
+the current request. Editing, branching, and passing checks are not
+authorization. One instruction covers one commit for the current logical change
+and then expires. Use a concise factual subject and append:
+
+```text
+Co-authored-by: AGENT MODEL <EMAIL>
+```
+
+For Codex use `Codex MODEL <noreply@openai.com>`, with the actual runtime model;
+omit the model when unavailable rather than guessing. Other agents need a
+documented official or project-owned identity, otherwise ask the user.
+
+Use the `architectural-coherence` skill for its full design and review method.

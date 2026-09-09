@@ -18,7 +18,6 @@ agent-dotfiles/
 ├── SKILLS.md                       # 技能清单:自定义(本仓同步) + 开源(记安装方式)
 ├── config/                         # 配置快照(SSOT,由 sync.sh 直接应用)
 │   ├── claude.json                 #   Claude 公共配置(enabledPlugins + statusLine + effort + env)
-│   ├── codex.toml                  #   Codex 行为级配置(reasoning effort / 关闭响应存储)
 │   ├── opencode.json               #   OpenCode 公共配置快照
 │   └── codebuddy.json              #   CodeBuddy 公共配置快照
 ├── apps/                           # 各 app 装配指南
@@ -26,7 +25,7 @@ agent-dotfiles/
 │   ├── codex.md                    #   superpowers 原生插件(openai/plugins) + sync.sh
 │   ├── gemini.md                   #   Gemini & Antigravity(agy plugin install superpowers + GEMINI.md + 技能)
 │   ├── opencode.md                 #   OpenCode(AGENTS.md + 技能 + 公共配置)
-│   └── codebuddy.md                #   CodeBuddy(Claude 兼容 settings.json + rules + 技能)
+│   └── codebuddy.md                #   CodeBuddy(settings.json + rules + 技能)
 ├── open-source.md                  # 开源插件/技能清单 + 来源 + 安装/取舍(不 vendoring)
 ├── rules/                          # 【自定义】Claude / CodeBuddy always-on 规则(原生加载)
 │   ├── architectural-coherence.md  #   改动后架构连贯性(极简总则,指向同名 skill)
@@ -43,7 +42,7 @@ agent-dotfiles/
 │   ├── diagnose-gate.sh            #   诊断类提问时先给根因+方案再改码
 │   └── README.md                   #   钩子说明 + 重新启用的配置
 ├── memories/
-│   └── agent-principles.md         # 常驻准则 → ~/.gemini/GEMINI.md、~/.codex/AGENTS.md、~/.config/opencode/AGENTS.md、~/.codebuddy/AGENTS.md
+│   └── agent-principles.md         # 常驻准则 → ~/.gemini/GEMINI.md、~/.codex/AGENTS.md、~/.config/opencode/AGENTS.md
 └── scripts/
     └── sync.sh                     # 一键同步自定义资产到各 agent(见下)
 ```
@@ -52,16 +51,16 @@ agent-dotfiles/
 
 经过"复用优先"收敛后,真正自定义的只有:
 
-- `rules/` —— always-on 规则,Claude / CodeBuddy 原生加载。其中 `architectural-coherence` 经核实 superpowers 无等价物(总则);`minimal-change` 取代已退场的 karpathy-guidelines;其余为写作/密钥/图示/提交纪律。
+- `rules/` —— Claude / CodeBuddy 原生加载的简洁规则。`architectural-coherence` 的详细方法在同名 skill；其余覆盖写作、密钥、图示与提交纪律。
 - `skills/architectural-coherence/` —— 架构连贯 rule 的详细手册(按需触发;与 rule 同名配对)。
-- `memories/agent-principles.md` —— 常驻准则 → `~/.gemini/GEMINI.md`(Gemini) / `~/.codex/AGENTS.md`(Codex,标记块) / `~/.config/opencode/AGENTS.md`(OpenCode) / `~/.codebuddy/AGENTS.md`(CodeBuddy)。保持 app-neutral。
+- `memories/agent-principles.md` —— Codex、Gemini、OpenCode 的精简常驻规则 → `~/.gemini/GEMINI.md` / `~/.codex/AGENTS.md`(标记块) / `~/.config/opencode/AGENTS.md`。
 - `config/` —— 各 agent 公共配置快照,sync.sh 直接应用。
 - `scripts/sync.sh` —— 同步脚本。
 - `hooks/diagnose-gate.sh` —— 可选 PreToolUse 钩子(当前停用作备用,见 `hooks/README.md`)。
 
 其余全部依赖开源:**superpowers**(主框架,自带 14 技能) + Anthropic 官方文档技能(docx/pdf/pptx/xlsx)。
 
-> **多端对齐**:工程纪律一致,载体统一 —— 各端安装 superpowers 原生插件,再叠一层薄自定义(Claude/CodeBuddy `rules/`、Gemini/Codex/OpenCode/CodeBuddy 的 AGENTS.md/GEMINI.md、`architectural-coherence` 技能),全部由 `scripts/sync.sh` 落地。
+> **多端对齐**:工程纪律一致,载体统一 —— Claude/CodeBuddy 使用 `rules/`; Gemini/Codex/OpenCode 使用常驻规则;各端再安装 `architectural-coherence` 技能。全部由 `scripts/sync.sh` 落地。
 
 ## 全新机器:应用流程
 
