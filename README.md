@@ -30,6 +30,7 @@ agent-dotfiles/
 ├── rules/                          # 【自定义】Claude / CodeBuddy always-on 规则(原生加载)
 │   ├── architectural-coherence.md  #   改动后架构连贯性(极简总则,指向同名 skill)
 │   ├── minimal-change.md           #   最小化变动/外科手术式改动(从属架构连贯:先连贯后最小)
+│   ├── plan-calibration.md         #   方案反馈后的目标、范围与取舍校准
 │   ├── function-layout.md          #   文件内函数布局
 │   ├── technical-writing.md        #   技术文档写作风格
 │   ├── no-plaintext-secrets.md     #   不回显明文密钥

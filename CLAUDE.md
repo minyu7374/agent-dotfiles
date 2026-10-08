@@ -35,6 +35,7 @@ Everything else is open-source. The repo's own content is just:
 |---|---|
 | `rules/architectural-coherence.md` | always-on rule (Claude / CodeBuddy); the one verified gap — terse general rule, points to the skill |
 | `rules/minimal-change.md` | always-on rule (Claude / CodeBuddy); surgical/minimal-diff discipline, explicitly subordinate to architectural-coherence (coherence first, then minimal). Replaces the retired karpathy-guidelines skill |
+| `rules/plan-calibration.md` | always-on rule (Claude / CodeBuddy); recalibrates a proposal after feedback without redefining the agreed goal or expanding scope. Mirrored to `memories/agent-principles.md` |
 | `rules/function-layout.md` | always-on rule (Claude / CodeBuddy); in-file function ordering convention |
 | `rules/technical-writing.md` | always-on rule (Claude / CodeBuddy); plain engineering prose for docs/comments/messages |
 | `rules/no-plaintext-secrets.md` | always-on rule (Claude / CodeBuddy); never display credentials in plaintext, redact instead. Mirrored to `memories/agent-principles.md` |

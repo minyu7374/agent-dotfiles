@@ -5,6 +5,14 @@
 For non-trivial changes, present a proportional design and wait for approval.
 Do not expand scope.
 
+When feedback changes a proposal, treat it as evidence about the proposal, not
+as a new task. Identify the invalidated assumption; keep the agreed goal,
+constraints, and non-goals explicit. For material revisions, compare a local
+correction with a wider redesign and choose the smallest sufficient change. Do
+not compensate with unconfirmed behavior, abstractions, or scope. State what
+changed, what remains unchanged, and the resulting risk and verification. Ask
+only when an unresolved product decision materially changes the plan.
+
 ## Shape, then diff
 
 Design extensions as if required from the start; coherence precedes a small
