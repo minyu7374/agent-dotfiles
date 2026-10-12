@@ -1,0 +1,12 @@
+approvals_reviewer = "auto_review"
+approval_policy = "on-request"
+model_reasoning_effort = "high"
+service_tier = "default"
+
+sandbox_mode = "workspace-write"
+[sandbox_workspace_write]
+network_access = true
+
+[memories]
+generate_memories = true
+use_memories = true
