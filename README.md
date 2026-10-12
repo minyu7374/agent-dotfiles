@@ -26,6 +26,7 @@ agent-dotfiles/
 │   ├── gemini.md                   #   Gemini & Antigravity(agy plugin install superpowers + GEMINI.md + 技能)
 │   ├── opencode.md                 #   OpenCode(AGENTS.md + 技能 + 公共配置)
 │   └── codebuddy.md                #   CodeBuddy(settings.json + rules + 技能)
+├── remote-control/                 # Herdr Telegram、codex-tg 与 Herdr Mobile 方案
 ├── open-source.md                  # 开源插件/技能清单 + 来源 + 安装/取舍(不 vendoring)
 ├── rules/                          # 【自定义】Claude / CodeBuddy always-on 规则(原生加载)
 │   ├── architectural-coherence.md  #   改动后架构连贯性(极简总则,指向同名 skill)
@@ -85,6 +86,10 @@ agent-dotfiles/
 ```
 
 各 app 细节见 `apps/`,技能见 `SKILLS.md`,插件取舍见 `open-source.md`。
+
+## 远程控制
+
+[远程控制方案](remote-control/README.md)记录 Herdr–Telegram、codex-tg 和 Herdr Mobile 的接入、部署与验收步骤。Telegram 方案使用独立 Bot，Mobile 方案使用设备配对；私密配置留在本机，不由 `scripts/sync.sh` 同步。
 
 ## 已知坑
 
