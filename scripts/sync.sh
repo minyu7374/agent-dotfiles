@@ -69,7 +69,7 @@ wants() {
 }
 
 # ---- 常驻准则 ----
-# Gemini / OpenCode / CodeBuddy 的目标文件由本仓完全托管,直接覆盖;
+# Gemini / OpenCode 的目标文件由本仓完全托管,直接覆盖;
 # Codex 的 AGENTS.md 可能与用户内容共存,用标记块替换,保留块外内容。
 PRINCIPLES_SRC="$REPO_ROOT/memories/agent-principles.md"
 
@@ -80,7 +80,7 @@ cp_principles() {
 }
 
 # 把 target 中 begin/end 标记之间的块替换为 src 的内容(幂等;保留块外内容)。
-# 新块插到文件顶部:对 TOML 而言这保证键落在根级而非某个 [table] 段内。
+# 首次同步时插到文件顶部;已有标记块保留原位置。
 replace_block() {
   local target="$1" src="$2" begin="$3" end="$4"
   if [[ $DRY_RUN -eq 1 ]]; then
@@ -141,7 +141,7 @@ sync_skills() {
   done
 }
 
-# ---- 公共配置快照(JSON 合并:保留用户专属字段,整体替换集合类字段) ----
+# ---- 公共配置快照(对象递归合并,整体替换插件启用表和技能可见性表) ----
 merge_settings_json() {
   local target="$1" src="$2"
   run mkdir -p "$(dirname "$target")"
@@ -156,7 +156,7 @@ merge_settings_json() {
   fi
   local tmp="${target}.agent-dotfiles.tmp"
   jq --slurpfile src "$src" '
-    . + $src[0]
+    . * $src[0]
     | if $src[0] | has("enabledPlugins") then .enabledPlugins = $src[0].enabledPlugins else . end
     | if $src[0] | has("skillOverrides") then .skillOverrides = $src[0].skillOverrides else . end
   ' "$target" > "$tmp"
@@ -198,16 +198,6 @@ sync_opencode() {
   echo "## OpenCode"
   cp_principles "$OPENCODE_DIR/AGENTS.md"
   sync_skills "$OPENCODE_DIR/skills"
-  # opencode 配置:合并进已存在的 opencode.json/.jsonc,都不存在则新建 .jsonc
-  local target=""
-  [[ -f "$OPENCODE_DIR/opencode.json" ]] && target="$OPENCODE_DIR/opencode.json"
-  [[ -f "$OPENCODE_DIR/opencode.jsonc" ]] && target="$OPENCODE_DIR/opencode.jsonc"
-  [[ -z "$target" ]] && target="$OPENCODE_DIR/opencode.jsonc"
-  if [[ -f "$target" ]] && jq -e . "$target" >/dev/null 2>&1; then
-    merge_settings_json "$target" "$REPO_ROOT/config/opencode.json"
-  else
-    run cp "$REPO_ROOT/config/opencode.json" "$target"
-  fi
 }
 
 for app in claude codex gemini opencode codebuddy; do

@@ -17,7 +17,7 @@ Claude Code 由本仓直接管理:自定义规则/技能/公共配置快照经 `
 
 - **插件**:`superpowers`(主框架) + `context7` + 各语言 LSP(`gopls`/`pyright`/`clangd`,按所用语言临时开关,用到再开)。
 - **MCP**:`context7`(来自 context7 插件)。需要其它 MCP 时按需在 settings.json 单独引入。
-- **技能**:superpowers 自带 14 个(brainstorming / TDD / systematic-debugging / writing-plans / code-review / worktrees 等,随插件走)+ 开源(docx/pdf/pptx/xlsx/skill-creator = name-only) + 自定义(architectural-coherence)。
+- **技能**:Superpowers 工程技能随插件走，版本与安装方式见[开源插件清单](../open-source.md#superpowers)；文档技能的可见性设置见[技能清单](../SKILLS.md)。
 - **规则(always-on)**:`architectural-coherence`、`minimal-change`、`function-layout`、`technical-writing` 等 —— 由 Claude Code 原生加载 `~/.claude/rules/`,与是否装插件无关。
 
 ## 应用命令
@@ -30,7 +30,7 @@ Claude Code 由本仓直接管理:自定义规则/技能/公共配置快照经 `
 ./scripts/sync.sh --app claude
 ```
 
-> ⚠️ **`enabledPlugins` / `skillOverrides` 是整体替换,非叠加**:sync.sh 用 `config/claude.json` 里的集合**整体覆盖** settings.json 中这两个字段,避免旧插件/旧覆盖被并回来。其它字段(permissions / mcpServers / model / theme 等)保持不动。改完**重启 Claude Code**(插件在启动时加载)。
+> 公共配置按对象递归合并，保留未托管字段，包括 `env` 中用户自己的变量。`enabledPlugins` / `skillOverrides` 两张表由快照整体替换。更新后新开会话加载。
 
 ## 自定义规则/技能落地
 

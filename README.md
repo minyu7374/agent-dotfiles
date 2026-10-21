@@ -1,100 +1,66 @@
 # agent-dotfiles
 
-跨 AI 编码助手(Claude Code / Codex / Gemini · Antigravity / OpenCode / CodeBuddy)的统一配置,本仓即**单一真源(SSOT)**,`scripts/sync.sh` 一键把自定义资产同步到各 agent。provider / 模型不再由第三方切换工具接管——各厂商现在都有明确的主流原生接入方式,各 agent 自己配。
+Claude Code、Codex、Gemini / Antigravity、OpenCode、CodeBuddy 的共享配置真源。
+`scripts/sync.sh` 同步自定义规则、技能、常驻准则和 Claude / CodeBuddy 公共配置。
 
-## 设计理念
+## 维护边界
 
-1. **复用优先**:先用已有的开源插件 / 技能,只为"真正没人覆盖的空白"写自定义内容。
-2. **superpowers 为主框架**(多端统一):一套精简的工程纪律技能库(brainstorming → TDD → 调试 → 计划 → 评审 → worktree 等 14 个技能),且每个 harness 都支持原生插件/技能导入安装,同一框架覆盖各端。其余插件/技能保持精简,避免重叠。(前身为 **ECC**,因 228 skills / 60 agents 过于臃肿而退场,换成更聚焦的 superpowers。)
-3. **本仓为单一真源**:配置快照、常驻准则、自定义规则/技能都收口到本仓;`scripts/sync.sh` 负责把它们同步到各 agent 的配置目录。不再依赖 cc-switch。
-4. **不 vendoring 开源内容**:开源插件/技能只记"装什么、从哪来、怎么装";仓库只承载**自定义资产**与**配置真源**。
+- **复用优先**：Superpowers 提供工程方法，本仓补充流程边界、架构一致性和个人约定。
+- **按实际影响选择流程**：简单明确的任务直接处理，复杂任务再展开设计；详见[规划校准规则](rules/plan-calibration.md)。
+- **开源内容不入库**：来源、安装、升级和版本状态集中在[开源插件清单](open-source.md)，技能说明见[SKILLS.md](SKILLS.md)。
+- **原生管理 provider 和模型**：本仓不接管登录凭据、模型选择或 OpenCode JSON / JSONC 配置。
 
-## 仓库结构
+## 仓库资产
 
-```
-agent-dotfiles/
-├── README.md                       # 本文件:理念 + 结构 + 应用总流程
-├── CLAUDE.md                       # 在 Claude Code 中维护本仓的说明
-├── SKILLS.md                       # 技能清单:自定义(本仓同步) + 开源(记安装方式)
-├── config/                         # 配置快照(SSOT,由 sync.sh 直接应用)
-│   ├── claude.json                 #   Claude 公共配置(enabledPlugins + statusLine + effort + env)
-│   ├── opencode.json               #   OpenCode 公共配置快照
-│   └── codebuddy.json              #   CodeBuddy 公共配置快照
-├── apps/                           # 各 app 装配指南
-│   ├── claude.md                   #   superpowers 插件 + MCP + 技能 + 规则 + sync.sh
-│   ├── codex.md                    #   superpowers 原生插件(openai/plugins) + sync.sh
-│   ├── gemini.md                   #   Gemini & Antigravity(agy plugin install superpowers + GEMINI.md + 技能)
-│   ├── opencode.md                 #   OpenCode(AGENTS.md + 技能 + 公共配置)
-│   └── codebuddy.md                #   CodeBuddy(settings.json + rules + 技能)
-├── remote-control/                 # Herdr Telegram、codex-tg 与 Herdr Mobile 方案
-├── open-source.md                  # 开源插件/技能清单 + 来源 + 安装/取舍(不 vendoring)
-├── rules/                          # 【自定义】Claude / CodeBuddy always-on 规则(原生加载)
-│   ├── architectural-coherence.md  #   改动后架构连贯性(极简总则,指向同名 skill)
-│   ├── minimal-change.md           #   最小化变动/外科手术式改动(从属架构连贯:先连贯后最小)
-│   ├── plan-calibration.md         #   方案反馈后的目标、范围与取舍校准
-│   ├── function-layout.md          #   文件内函数布局
-│   ├── technical-writing.md        #   技术文档写作风格
-│   ├── no-plaintext-secrets.md     #   不回显明文密钥
-│   ├── diagrams-svg-first.md       #   技术文档图示用 SVG(或 mermaid),不用 ASCII
-│   ├── no-auto-commit.md           #   未经明确要求不自动 commit
-│   └── language.md                 #   简体中文交流
-├── skills/                         # 【自定义】技能(sync.sh 同步到各端技能目录)
-│   └── architectural-coherence/    #   架构连贯的详细实施手册(与同名 rule 配对:rule=总则 / skill=手册)
-├── hooks/                          # 【自定义】可选钩子(当前停用,作备用)
-│   ├── diagnose-gate.sh            #   诊断类提问时先给根因+方案再改码
-│   └── README.md                   #   钩子说明 + 重新启用的配置
-├── memories/
-│   └── agent-principles.md         # 常驻准则 → ~/.gemini/GEMINI.md、~/.codex/AGENTS.md、~/.config/opencode/AGENTS.md
-└── scripts/
-    └── sync.sh                     # 一键同步自定义资产到各 agent(见下)
-```
+| 位置 | 职责 |
+|---|---|
+| `config/claude.json`、`config/codebuddy.json` | 两端公共配置快照 |
+| `rules/` | Claude / CodeBuddy 原生加载的常驻规则 |
+| `memories/agent-principles.md` | Codex、Gemini / Antigravity、OpenCode 的常驻摘要 |
+| `skills/architectural-coherence/` | 各端共享的架构一致性手册 |
+| `scripts/sync.sh` | 同步上述自定义资产 |
+| `apps/` | 各客户端的来源、落地位置与应用说明 |
+| `hooks/` | 可选诊断钩子，当前停用 |
+| `remote-control/` | 远程控制接入和运维文档 |
 
-## 自定义足迹（仅此而已）
+## 同步行为
 
-经过"复用优先"收敛后,真正自定义的只有:
+| 客户端 | 本仓同步内容 |
+|---|---|
+| [Claude](apps/claude.md) | `rules/`、自定义技能、公共 `settings.json` 字段 |
+| [CodeBuddy](apps/codebuddy.md) | `rules/`、自定义技能、公共 `settings.json` 字段 |
+| [Codex](apps/codex.md) | `AGENTS.md` 托管块、自定义技能；保留块外内容 |
+| [Gemini / Antigravity](apps/gemini.md) | 完全托管的 `GEMINI.md`、自定义技能 |
+| [OpenCode](apps/opencode.md) | 完全托管的 `AGENTS.md`、自定义技能 |
 
-- `rules/` —— Claude / CodeBuddy 原生加载的简洁规则。`architectural-coherence` 的详细方法在同名 skill；其余覆盖写作、密钥、图示与提交纪律。
-- `skills/architectural-coherence/` —— 架构连贯 rule 的详细手册(按需触发;与 rule 同名配对)。
-- `memories/agent-principles.md` —— Codex、Gemini、OpenCode 的精简常驻规则 → `~/.gemini/GEMINI.md` / `~/.codex/AGENTS.md`(标记块) / `~/.config/opencode/AGENTS.md`。
-- `config/` —— 各 agent 公共配置快照,sync.sh 直接应用。
-- `scripts/sync.sh` —— 同步脚本。
-- `hooks/diagnose-gate.sh` —— 可选 PreToolUse 钩子(当前停用作备用,见 `hooks/README.md`)。
+Claude / CodeBuddy 的公共配置按对象递归合并：快照中的值优先，未托管字段保留，
+包括 `env` 中用户自己的变量。`enabledPlugins` 和 `skillOverrides` 两张表由本仓
+整体替换，避免失效的插件和技能设置重新混入。
 
-其余全部依赖开源:**superpowers**(主框架,自带 14 技能) + Anthropic 官方文档技能(docx/pdf/pptx/xlsx)。
+插件安装由各客户端的原生管理器完成，`sync.sh` 不下载插件或开源技能。
+本机状态栏程序也需单独安装：Claude 使用 `ccstatusline`，CodeBuddy 使用
+`$HOME/.codebuddy/statusline-command.sh`。
 
-> **多端对齐**:工程纪律一致,载体统一 —— Claude/CodeBuddy 使用 `rules/`; Gemini/Codex/OpenCode 使用常驻规则;各端再安装 `architectural-coherence` 技能。全部由 `scripts/sync.sh` 落地。
+## 应用与检查
 
-## 全新机器:应用流程
+依赖 Bash、jq、Python 3。
 
 ```bash
-# 0) 装依赖:jq(sync.sh 做 JSON 合并用)
-# 安装 jq
+# 预览与应用；也可用 --app claude|codex|gemini|opencode|codebuddy
+./scripts/sync.sh --dry-run
+./scripts/sync.sh
 
-# 1) 一键同步自定义资产到全部 5 个 agent
-./scripts/sync.sh                       # 或 --app claude 单独同步某一个;--dry-run 先预览
-
-# 2) 各端装 superpowers 原生插件(工程纪律主框架;superpowers 由各 harness 自带插件管理器安装,本仓不管)
-#    Claude:    在 claude 会话内 /plugin install superpowers@claude-plugins-official
-#    Codex:     在 Codex CLI 会话内 /plugins → 搜 superpowers → Install Plugin
-#    Gemini:    agy plugin install https://github.com/obra/superpowers
-#    CodeBuddy: 应用内从 codebuddy-plugins-official 安装 superpowers
-
-# 3) provider / 模型:各 agent 官方原生配置(Claude `claude` 登录 / Codex `codex login` /
-#    OpenCode opencode.json / Antigravity 应用内设置 / CodeBuddy 应用内设置),本仓不接管。
-
-# 4) 重启各客户端(插件/技能/规则在启动时加载)
+# 修改脚本或配置后的检查
+bash -n scripts/*.sh hooks/*.sh
+jq empty config/*.json
 ```
 
-各 app 细节见 `apps/`,技能见 `SKILLS.md`,插件取舍见 `open-source.md`。
+同步逻辑的验证在临时目录进行，核对用户字段保留、托管表替换和重复同步幂等性，
+不在项目中保留测试脚本。
+
+编辑快照不等于已经应用；同步后重启客户端或新开会话，再确认规则与插件加载结果。
 
 ## 远程控制
 
-[远程控制方案](remote-control/README.md)记录 Herdr–Telegram、codex-tg 和 Herdr Mobile 的接入、部署与验收步骤。Telegram 方案使用独立 Bot，Mobile 方案使用设备配对；私密配置留在本机，不由 `scripts/sync.sh` 同步。
-
-## 已知坑
-
-- **`enabledPlugins` / `skillOverrides` 是整体替换,非叠加**:sync.sh 用 `config/claude.json`(及 `codebuddy.json`)里的集合**整体覆盖** settings.json 中这两个字段,避免旧插件/旧覆盖被并回来。其它用户专属字段(permissions / mcpServers / model / theme / trustedDirectories)不动。
-- **`ccstatusline` 需另装**:`config/claude.json` 里声明了 statusLine,但需本机存在 `ccstatusline` 命令,否则状态栏会报错(可删掉该段)。
-- **`~/.claude/rules/` 是原生,不是插件加载**:Claude Code 的 memory feature 在启动时自动加载 `~/.claude/rules/*.md`(与 `CLAUDE.md` 同级)——这不受移除 ECC/任何插件影响。
-- **superpowers 由各 harness 自装,不在本仓**:每个 harness 自己的插件管理器负责(Claude `enabledPlugins` / Codex `openai/plugins` / Antigravity `agy plugin install`);本仓只渲染 Claude 的 `enabledPlugins` 条目与公共配置。
-- **重启才生效**:插件/技能/规则在客户端启动时加载;`claude -c` 也是新进程会重载配置,但上下文会带旧残影,干净起见可开新会话。
+[远程控制方案](remote-control/README.md)记录 Herdr–Telegram、codex-tg 与 Herdr Mobile
+的接入、部署和验收步骤。私密配置保留在本机，不由 `sync.sh` 同步。

@@ -1,24 +1,17 @@
 # OpenCode 装配方案
 
-OpenCode 由本仓直接管理:常驻准则 / 技能 / 公共配置快照经 `scripts/sync.sh` 落地到 `~/.config/opencode/`。provider 与模型在 `opencode.json`(或项目 `.opencode/`)里官方原生配置,脚本不接管。
+本仓只同步 OpenCode 的常驻准则与自定义技能。`opencode.json`、`opencode.jsonc`
+及其中的 provider、模型、插件配置均由 OpenCode 原生管理，`sync.sh` 不写入它们。
 
-## 配置来源（本仓 → 落地）
-
-| 层 | 本仓文件 | 落地位置 | 机制 |
-|---|---|---|---|
-| 公共配置 | `config/opencode.json` | `~/.config/opencode/opencode.jsonc` | `scripts/sync.sh`(合并进已存在的 json/.jsonc) |
-| 常驻准则 | `memories/agent-principles.md` | `~/.config/opencode/AGENTS.md` | `scripts/sync.sh`(直接覆盖,文件完全托管) |
-| 技能 | `skills/architectural-coherence/` | `~/.config/opencode/skills/` | `scripts/sync.sh` |
-| Provider/模型 | 官方原生 | `opencode.json` / 项目 `.opencode/` | 脚本不管 |
-
-## 能力构成
-
-- **技能**: `architectural-coherence`(架构连贯手册)+ 开源文档技能(`docx`/`pdf`/`pptx`/`xlsx`/`skill-creator`,随 anthropics/skills 安装)。
-- **常驻准则**: `~/.config/opencode/AGENTS.md` 承载方案先行 / 架构连贯 / 函数布局 / 最小变动等总则。
-
-## 应用命令
+| 本仓来源 | 落地位置 | 机制 |
+|---|---|---|
+| `memories/agent-principles.md` | `~/.config/opencode/AGENTS.md` | 完全托管，直接覆盖 |
+| `skills/architectural-coherence/` | `~/.config/opencode/skills/architectural-coherence/` | 同步技能目录 |
 
 ```bash
-# 1) 同步本仓自定义资产(AGENTS.md + 技能 + 公共配置)
+./scripts/sync.sh --app opencode --dry-run
 ./scripts/sync.sh --app opencode
 ```
+
+需要 Superpowers 时按[上游 OpenCode 安装说明](https://github.com/obra/superpowers/blob/main/.opencode/INSTALL.md)
+安装；本仓同步不代表该插件已安装。其他可选技能见[技能清单](../SKILLS.md)。

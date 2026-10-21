@@ -1,24 +1,46 @@
-# 技能清单（跨 app）
+# 技能清单
 
-本仓承载的技能分两类:**自定义**(本仓 `skills/`,由 `scripts/sync.sh` 同步到各 app)与 **开源**(只记来源与安装方式,不 vendoring)。superpowers 自带的 14 个技能随各端插件走,不在此列。
+自定义技能由本仓同步；开源技能通过其原生插件或安装方式获得，`sync.sh` 不下载它们。
+Superpowers 的工程技能随插件走，来源和版本统一见[开源插件清单](open-source.md#superpowers)。
 
-## 自定义技能（sync.sh 同步到全部 5 个 app）
+## 自定义技能
 
-| 技能 | 来源 | 落地 | 说明 |
-|---|---|---|---|
-| `architectural-coherence` | 本仓 `skills/` | 各 app 技能目录 | 架构连贯详细手册;superpowers 无等价物。与 Claude/CodeBuddy 同名 always-on 规则配对(rule=总则 / skill=手册) |
+| 技能 | 来源 | 用途 |
+|---|---|---|
+| `architectural-coherence` | 本仓 `skills/` | 架构一致性的详细方法；常驻规则负责总则，技能按需加载 |
 
-各 app 技能目录:`~/.claude/skills/`(Claude)、`~/.codex/skills/`(Codex)、`~/.gemini/skills/`(**Antigravity / agy 直接读 `~/.gemini` 下的 skills 与 GEMINI.md**)、`~/.config/opencode/skills/`(OpenCode)、`~/.codebuddy/skills/`(CodeBuddy)。
+| 客户端 | 技能目录 |
+|---|---|
+| Claude | `~/.claude/skills/` |
+| Codex | `~/.codex/skills/` |
+| Gemini / Antigravity | `~/.gemini/skills/` |
+| OpenCode | `~/.config/opencode/skills/` |
+| CodeBuddy | `~/.codebuddy/skills/` |
 
-## 开源技能（superpowers 未覆盖;随 anthropics/skills 安装）
+常驻规则的载体与同步行为见 [README](README.md#同步行为)，各端细节见 `apps/`。
 
-| 技能 | 来源 | 用途 | Claude/CodeBuddy 加载态 |
-|---|---|---|---|
-| `docx` / `pdf` / `pptx` / `xlsx` | anthropics/skills | Office / PDF 文档处理 | **name-only**(仅载描述,用到才展开;省 token) |
-| `skill-creator` | anthropics/claude-plugins-official | 创建 / 优化 / 评测技能 | **name-only**(低频) |
+## 可选开源技能
 
-> **name-only vs on**:Claude / CodeBuddy 特有的技能加载态——`name-only` 只把技能描述放进上下文,正文按需加载,适合体量大、低频的文档技能;`on` 则常驻。codex / gemini / opencode 端无此区分,启用即可用。`config/claude.json` 与 `config/codebuddy.json` 里已把上述文档技能整体覆盖为 name-only。
+| 技能 | 来源 | 用途 |
+|---|---|---|
+| `docx` / `pdf` / `pptx` / `xlsx` | [anthropics/skills](https://github.com/anthropics/skills) | Office / PDF 文档处理 |
+| `skill-creator` | [Anthropic 官方插件市场](https://github.com/anthropics/claude-plugins-official) | 创建、优化和评测技能 |
 
-> **主框架不在此表**:各端的工程纪律主要来自 **superpowers 原生插件**(Claude `enabledPlugins` / Codex `openai/plugins` / Antigravity `agy plugin install` / CodeBuddy 插件市场,见 `apps/*.md`),其 14 技能随插件走。
+这些是可选能力，不表示已在所有客户端安装。Codex 已有对应官方文档插件或系统技能时，
+直接使用现有能力，无需再重复安装 Anthropic 版本。
 
-> **对齐说明**:各端载体统一为 superpowers 插件或共享技能库;本仓这一层负责补齐 superpowers 未覆盖的部分——① `architectural-coherence` 作为自定义技能同步到各端(superpowers 无等价物);② Claude & CodeBuddy 侧 `rules/` 的 always-on 规则;③ 常驻准则文件 `~/.gemini/GEMINI.md`、`~/.codex/AGENTS.md`、`~/.config/opencode/AGENTS.md` 与 `~/.codebuddy/AGENTS.md`(源自 `memories/agent-principles.md`,由 `scripts/sync.sh` 维护)。
+## 技能可见性
+
+本仓在 Claude / CodeBuddy 公共快照中将文档技能和 `skill-creator` 设为 `name-only`。
+Claude 的[官方定义](https://code.claude.com/docs/en/skills#override-skill-visibility-from-settings)是：
+
+| 状态 | 模型看到的列表 | 用户菜单 |
+|---|---|---|
+| `on` | 名称和描述 | 可见 |
+| `name-only` | 仅名称 | 可见 |
+| `user-invocable-only` | 隐藏 | 可见 |
+| `off` | 隐藏 | 隐藏 |
+
+`on` 与 `name-only` 都在调用时加载正文；`on` 不表示正文常驻。
+Claude 的 `skillOverrides` 不作用于插件提供的技能，插件通过原生插件管理器控制。
+其他客户端按自身机制加载，不套用 Claude 的设置值。
