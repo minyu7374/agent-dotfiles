@@ -2,16 +2,29 @@
 
 ## Plan
 
-For non-trivial changes, present a proportional design and wait for approval.
-Do not expand scope.
+Use the lightest workflow sufficient for the confirmed task and actual impact.
+Handle clear, simple changes directly. For non-trivial bounded changes, present
+a brief design and wait for approval. Use detailed design for shared-contract
+or component changes, data migrations, or important unresolved decisions.
+New files, features, or unfamiliar code alone do not justify heavier process;
+investigate relevant unknowns before escalating.
 
-When feedback changes a proposal, treat it as evidence about the proposal, not
-as a new task. Identify the invalidated assumption; keep the agreed goal,
-constraints, and non-goals explicit. For material revisions, compare a local
-correction with a wider redesign and choose the smallest sufficient change. Do
-not compensate with unconfirmed behavior, abstractions, or scope. State what
-changed, what remains unchanged, and the resulting risk and verification. Ask
-only when an unresolved product decision materially changes the plan.
+Adjust workflow in either direction as evidence changes. Upgrade when the
+current approach is insufficient; downgrade when clarification or resolved risks
+remove the need. Explain material adjustments briefly, without restarting the
+whole plan or adding a separate approval for the workflow change itself.
+
+Treat feedback as a local revision, not a new task. Preserve agreed goals,
+constraints, non-goals, and necessary acceptance checks; remove behavior and
+checks justified only by invalidated assumptions. Obtain approval for material
+design or scope changes; do not reapprove unchanged work or expand scope merely
+because the process became heavier.
+
+These rules override third-party skill defaults for automatic workflow
+triggering, one-way escalation, and repeated approval gates. Preserve applicable
+architecture, debugging, verification, and permission requirements. Match checks
+to confirmed requirements and actual risks, independently of workflow depth;
+stop when acceptance is complete unless new evidence justifies further work.
 
 ## Shape, then diff
 
