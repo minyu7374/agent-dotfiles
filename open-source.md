@@ -8,9 +8,11 @@
 上游：[obra/superpowers](https://github.com/obra/superpowers)。工程方法包括需求澄清、
 规划、TDD、调试、实现和评审；本仓的[流程校准规则](rules/plan-calibration.md)定义适用边界。
 
-2026-10-21 核对：正式版 [7.0.0](https://github.com/obra/superpowers/releases/tag/v7.0.0)
-含 15 个技能。本机 Claude、Codex、Antigravity 已安装该版；CodeBuddy 官方市场仍提供
-4.0.3。市场版本可能落后于上游，安装后应核对实际版本，不能只看命令是否成功。
+2026-10-27 核对：上游最新正式版为
+[7.0.1](https://github.com/obra/superpowers/releases/tag/v7.0.1)；本机 Claude、Codex、
+Antigravity 仍为 7.0.0，含 15 个技能。Claude 官方市场当前固定到 7.0.0；CodeBuddy
+官方市场与本机安装均为 4.0.3。上游版本、市场提供版本和本机安装版本需分别核对；
+文档更新不表示插件已升级。
 
 | 客户端 | 安装 | 升级 / 加载 |
 |---|---|---|

@@ -3,6 +3,8 @@
 Claude Code、Codex、Gemini / Antigravity、OpenCode、CodeBuddy 的共享配置真源。
 `scripts/sync.sh` 同步自定义规则、技能、常驻准则和 Claude / CodeBuddy 公共配置。
 
+本项目的贡献指令统一在 [AGENTS.md](AGENTS.md)。
+
 ## 维护边界
 
 - **复用优先**：Superpowers 提供工程方法，本仓补充流程边界、架构一致性和个人约定。

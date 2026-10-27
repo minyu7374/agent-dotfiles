@@ -45,6 +45,10 @@ Use Simplified Chinese in conversation, explanations, and summaries. Write
 technical material plainly: lead with the result, use established terms and
 exact facts, and avoid literary flourish, metaphor, and translationese.
 
+When referring to code locations, provide clickable file references with accurate
+line numbers, using the client's supported format. Verify locations against the
+current file; do not guess line numbers.
+
 ## Secrets
 
 Never reveal credentials in plaintext by default. Redact values and say so;
