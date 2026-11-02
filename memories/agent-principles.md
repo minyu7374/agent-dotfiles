@@ -39,6 +39,20 @@ In created or modified files, public items precede private ones; callers precede
 callees; a single-use helper follows its caller, and a shared helper follows its
 last caller. Preserve an existing consistent layout.
 
+## Code comments
+
+When adding or changing code, proactively explain business rules, design choices,
+preconditions, edge cases, and external constraints that names and structure do
+not make clear. Focus comments on reasons, constraints, and likely misuse;
+briefly describe complex algorithms or flows without narrating code line by line.
+Prefer clear names and structure; do not mechanically comment on every function
+or branch, or substitute comments for necessary code improvements within scope.
+
+Keep comments close to the relevant code, concise, and factually accurate. Follow
+project language and documentation conventions, including public interface
+contracts. Update related comments when behavior changes and remove stale or
+misleading content; avoid unrelated comment cleanup.
+
 ## Communication
 
 Use Simplified Chinese in conversation, explanations, and summaries. Write
