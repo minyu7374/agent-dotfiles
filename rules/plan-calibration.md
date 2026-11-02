@@ -25,10 +25,13 @@ Downgrade when clarification, disproved assumptions, or resolved risks make
 the extra process unnecessary. Explain only the material change and its reason;
 do not restart planning or repeat the full task description at every adjustment.
 
-When revising a proposal after feedback, treat the feedback as evidence about
-the proposal, not as a new task. Identify the invalidated assumption and keep
-the agreed goal, constraints, non-goals, and necessary acceptance checks.
-Remove process, behavior, and checks justified only by the invalidated assumption.
+When revising after feedback, first identify the assumption or decision being
+challenged and which requirements remain in force. Treat the feedback as evidence
+about the proposal, not as a new task. Preserve the agreed goal, constraints,
+non-goals, and still-required behavior, conventions, and acceptance checks unless
+the user changes them. Remove only process, behavior, and checks whose
+justification no longer holds. Do not turn a local correction into a new
+objective for the whole task.
 
 Change only the affected parts. If a wider redesign or scope change is needed,
 explain why the local revision is insufficient and obtain approval for that
@@ -45,8 +48,14 @@ Heavier process does not authorize broader implementation.
 
 Handle high-impact actions with the required authorization and checks separately
 from workflow depth. Verification must match the confirmed requirements and
-actual risks; complete the agreed acceptance checks, then stop unless new
-evidence justifies more work.
+actual risks.
+
+Before completion, check both behavior and scope: requirements are met,
+still-required conventions and checks are preserved, and additions and removals
+have a task-relevant justification. Perform these reasoning checks internally by
+default; they do not themselves require extra documents, tools, or approval steps.
+Complete the agreed acceptance checks, then stop unless new evidence justifies
+more work.
 
 These project rules take precedence over third-party skill defaults for
 automatic workflow triggering, one-way escalation, and repeated approval gates.

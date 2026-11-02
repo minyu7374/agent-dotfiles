@@ -23,11 +23,15 @@ A future reader then sees "someone added X later," not one design. Reducing chur
 
 ## What to do instead
 
+Apply coherence within the confirmed task and established contracts. Introduce
+abstractions only when current requirements or contracts need them; coherence
+does not require new interfaces, base types, or implementation layers.
+
 Before writing, ask: **if this capability had been required on day one, what would this package / file / type look like?** Build toward that shape, then make the change fit it.
 
 You're creating harmony — not a patch — when:
 
-- **The abstraction is the spine.** Interface/base type is the organizing center; implementations are equal peers under it. None is the "real" one the others were retrofitted around.
+- **When an abstraction is needed, it is the spine.** Interface/base type is the organizing center; implementations are equal peers under it. None is the "real" one the others were retrofitted around.
 - **Parallel things look parallel.** Sibling implementations share constructor shape, naming convention, where constants live, and how files are split. A newcomer can't tell which came first.
 - **Tangled concerns get separated** when the change exposes them (don't keep two responsibilities fused in one file just because they already were).
 - **Names and file boundaries match the new reality** — rename and move when the old names now misdescribe things, rather than preserving them to shrink the diff.

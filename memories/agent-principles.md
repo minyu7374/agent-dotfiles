@@ -14,24 +14,39 @@ current approach is insufficient; downgrade when clarification or resolved risks
 remove the need. Explain material adjustments briefly, without restarting the
 whole plan or adding a separate approval for the workflow change itself.
 
-Treat feedback as a local revision, not a new task. Preserve agreed goals,
-constraints, non-goals, and necessary acceptance checks; remove behavior and
-checks justified only by invalidated assumptions. Obtain approval for material
-design or scope changes; do not reapprove unchanged work or expand scope merely
-because the process became heavier.
+Treat feedback as a local revision, not a new task. Identify the challenged
+assumption or decision before changing it. Preserve agreed goals, constraints,
+non-goals, and still-required behavior, conventions, and acceptance checks unless
+the user changes them; remove only process, behavior, and checks whose
+justification no longer holds. Do not turn a local correction into a new
+objective. Obtain approval for material design or scope changes; do not reapprove
+unchanged work or expand scope merely because the process became heavier.
 
 These rules override third-party skill defaults for automatic workflow
 triggering, one-way escalation, and repeated approval gates. Preserve applicable
 architecture, debugging, verification, and permission requirements. Match checks
-to confirmed requirements and actual risks, independently of workflow depth;
-stop when acceptance is complete unless new evidence justifies further work.
+to confirmed requirements and actual risks, independently of workflow depth.
+Before completion, check that requirements are met, still-required conventions
+and checks are preserved, and additions and removals are justified. These
+reasoning checks are internal by default and do not themselves require extra
+documents, tools, or approval steps. Stop when acceptance is complete unless
+new evidence justifies further work.
 
 ## Shape, then diff
 
-Design extensions as if required from the start; coherence precedes a small
-diff. Reshape only the affected design when necessary, then change only what it
-requires. Match nearby style; do not refactor, rename, reformat, or add
-speculative behavior outside scope. Remove only orphans created by the change.
+Bound design by the confirmed task. Added behavior, abstractions, compatibility,
+defensive logic, or process must serve a current requirement, an established
+contract, or an evidenced problem; general best practices and hypothetical
+benefits alone do not justify added complexity. Introduce abstractions only when
+current requirements or contracts need them; coherence does not require new
+interfaces, base types, or implementation layers. Design extensions as if required
+from the start within this boundary; coherence precedes a small diff. Reshape only
+the affected design when necessary, then change only what it requires.
+Match nearby style; do not refactor, rename, reformat, or add speculative behavior
+outside scope. Remove only orphans created by the change. Additions and removals
+both need a task-relevant reason. Simplification preserves still-required
+behavior, conventions, and checks; line, file, and abstraction counts alone do
+not decide what to keep.
 
 ## Source layout
 
