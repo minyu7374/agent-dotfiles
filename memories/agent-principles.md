@@ -34,14 +34,28 @@ new evidence justifies further work.
 
 ## Shape, then diff
 
-Bound design by the confirmed task. Added behavior, abstractions, compatibility,
-defensive logic, or process must serve a current requirement, an established
-contract, or an evidenced problem; general best practices and hypothetical
-benefits alone do not justify added complexity. Introduce abstractions only when
-current requirements or contracts need them; coherence does not require new
-interfaces, base types, or implementation layers. Design extensions as if required
-from the start within this boundary; coherence precedes a small diff. Reshape only
-the affected design when necessary, then change only what it requires.
+Bound design by the confirmed task. Added behavior, restrictions, abstractions,
+compatibility, defensive logic, or process must be necessary to meet a confirmed
+user requirement, an explicit applicable project requirement, or a verified
+existing contract. A discovered problem is evidence to assess against that scope,
+not independent authorization to expand it.
+
+Do not promote implementation preferences, generic best practices, or hypothetical
+risks into requirements or use them to add unrequested behavior, restrictions,
+or process. This includes extra validation or rejection rules, fallback paths,
+and approval gates. Calling an addition safer, more robust, cleaner, or more
+future-proof does not establish a requirement. Make routine implementation
+choices within the confirmed behavior and scope. If an addition lacks a
+requirement basis, omit it and continue authorized work. Ask only when a missing
+material decision prevents completing the task and cannot be resolved from
+available evidence. Keep optional suggestions separate from implementation;
+do not turn them into prerequisites or blockers.
+
+Introduce abstractions only when current requirements or contracts need them;
+coherence does not require new interfaces, base types, or implementation layers.
+Design extensions as if required from the start within this boundary; coherence
+precedes a small diff. Reshape only the affected design when necessary, then
+change only what it requires.
 Match nearby style; do not refactor, rename, reformat, or add speculative behavior
 outside scope. Remove only orphans created by the change. Additions and removals
 both need a task-relevant reason. Simplification preserves still-required

@@ -46,6 +46,13 @@ need it to remove special cases, parallel paths, or duplication. Do not add
 behavior, dependencies, compatibility, or abstractions for hypothetical needs.
 Heavier process does not authorize broader implementation.
 
+Implementation preferences, generic best practices, and hypothetical risks do
+not authorize extra process, approval gates, or acceptance criteria. Do not turn
+optional improvements into prerequisites or blockers. If an addition lacks a
+requirement basis, omit it and continue authorized work; ask only when a missing
+material decision prevents completing the task and cannot be resolved from
+available evidence.
+
 Handle high-impact actions with the required authorization and checks separately
 from workflow depth. Verification must match the confirmed requirements and
 actual risks.
