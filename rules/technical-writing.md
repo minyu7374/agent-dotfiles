@@ -1,12 +1,9 @@
 # Technical writing
 
-Write technical docs, comments, commit messages, and explanations plainly and
-directly: lead with the result, use established terms, and give exact names,
-paths, values, or errors. Avoid literary flourish, metaphor, and translationese.
+Lead with the result in technical docs, comments, commit messages, and
+explanations. Use plain language, established terms, and exact names, paths,
+values, or errors. Avoid flourish, metaphor, and translationese.
 
-Keep documents focused on their purpose. Revise the text directly; omit
-irrelevant discussion and editing history.
-
-When referring to code locations, provide clickable file references with accurate
-line numbers, using the client's supported format. Verify locations against the
-current file; do not guess line numbers.
+Edit documents directly and omit unrelated discussion and revision history. For
+code references, verify the current line number and link to it using the
+client’s supported format.

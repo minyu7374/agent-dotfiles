@@ -130,6 +130,13 @@ PY
 sync_rules() {
   local dest="$1"
   run mkdir -p "$dest"
+  # 旧版单语、英文版和中文版分别发布过 language.md，只清理与仓库旧版一致的文件。
+  local retired="$dest/language.md"
+  if [[ -f "$retired" && ! -L "$retired" ]]; then
+    case "$(cksum < "$retired")" in
+      '3930273477 75'|'3030237943 91'|'2821937016 79') run rm -f "$retired" ;;
+    esac
+  fi
   for f in "$TEXT_ROOT"/rules/*.md; do
     run cp "$f" "$dest/"
   done

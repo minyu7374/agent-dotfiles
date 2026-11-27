@@ -1,6 +1,5 @@
 # Function layout
 
-In created or modified source files: public items precede private ones; callers
-precede callees; a single-use helper follows its caller, and a shared helper
-follows its last caller. Preserve an existing consistent layout; do not reorder
-a file solely for this rule.
+Preserve an existing consistent layout. In new or modified code, place public
+items before private ones and callers before callees. Place helpers after their
+last caller. Avoid reordering a file solely for layout.

@@ -7,8 +7,7 @@ Claude Code、Codex、Gemini / Antigravity、OpenCode、CodeBuddy 的共享配�
 
 ## 维护边界
 
-- **复用优先**：Superpowers 提供工程方法，本仓补充流程边界、架构一致性和个人约定。
-- **按实际影响选择流程**：简单明确的任务直接处理，复杂任务再展开设计；详见[规划校准规则](rules/plan-calibration.md)。
+- **复用优先**：Superpowers 提供工程方法，本仓补充方案修订、架构一致性和个人约定。
 - **开源内容不入库**：来源、安装、升级和版本状态集中在[开源插件清单](open-source.md)，技能说明见[SKILLS.md](SKILLS.md)。
 - **原生管理 provider 和模型**：本仓不接管登录凭据、模型选择或 OpenCode JSON / JSONC 配置。
 
@@ -62,7 +61,7 @@ bash -n scripts/*.sh hooks/*.sh
 jq empty config/*.json
 ```
 
-`--lang` 选择安装文本的语言。两版都要求用简体中文回复，并共用 `config/` 下的配置快照。
+`--lang` 选择安装文本的语言，两版共用 `config/` 下的配置快照。
 切换语言时用相同的客户端范围再次同步即可。
 
 同步逻辑的验证在临时目录进行，核对用户字段保留、托管表替换和重复同步幂等性，

@@ -1,6 +1,6 @@
 # Diagrams: SVG first
 
-For technical-document diagrams, use a nearby `.svg` asset or inline SVG. Never
-use ASCII or box-drawing diagrams. Use Mermaid only on explicit user request or
-when the target cannot render SVG; state why. Plain text remains appropriate for
-code comments, terminal output, CLI help, and directory listings.
+Use a nearby SVG file or inline SVG for technical diagrams. Use Mermaid only if
+requested explicitly or the target cannot render SVG, and state why. Never draw
+diagrams with ASCII or box-drawing characters. Plain text is fine for code
+comments, terminal output, CLI help, and directory listings.

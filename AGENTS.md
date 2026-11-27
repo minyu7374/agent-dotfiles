@@ -33,9 +33,9 @@ Report source edits, synchronization, and client reload status separately.
 
 Match nearby formatting: shell scripts use two-space indentation and `set -euo pipefail`. Use descriptive lowercase, hyphenated names for rules and skills, such as `plan-calibration.md`.
 
-Use Simplified Chinese for communication and explanatory documentation; preserve English agent-facing hook text. Write plainly. Use SVG for technical diagrams; Mermaid requires an explicit request or an SVG-incapable target, with the reason stated.
+Write explanatory documentation in Simplified Chinese and preserve English agent-facing hook text. Write plainly. Use SVG for technical diagrams; Mermaid requires an explicit request or an SVG-incapable target, with the reason stated.
 
-Preserve consistent source layout: public items before private items, callers before callees. Use the `architectural-coherence` skill; change only the affected design. Present a proportional design and obtain approval before non-trivial changes.
+Preserve consistent source layout: public items before private items, callers before callees. Use the `architectural-coherence` skill to keep the architecture coherent when extending or refactoring code. Change only the affected design. Present a proportional design and obtain approval before non-trivial changes.
 
 ## Testing Guidelines
 

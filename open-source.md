@@ -6,7 +6,7 @@
 ## Superpowers
 
 上游：[obra/superpowers](https://github.com/obra/superpowers)。工程方法包括需求澄清、
-规划、TDD、调试、实现和评审；本仓的[流程校准规则](rules/plan-calibration.md)定义适用边界。
+规划、TDD、调试、实现和评审。
 
 2026-10-27 核对：上游最新正式版为
 [7.0.1](https://github.com/obra/superpowers/releases/tag/v7.0.1)；本机 Claude、Codex、

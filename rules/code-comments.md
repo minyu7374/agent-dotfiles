@@ -1,18 +1,9 @@
 # Code comments
 
-When adding or changing code, proactively comment on business rules, design
-choices, preconditions, edge cases, and external constraints that names and
-structure alone do not make clear.
+Use clear names and structure first. Beside the relevant code, explain
+non-obvious business rules, design choices, preconditions, edge cases, external
+constraints, and likely misuse. Briefly explain the approach in complex logic.
+Skip line-by-line commentary.
 
-Explain reasons, constraints, and likely misuse. For complex algorithms or
-flows, briefly describe the approach; avoid narrating code line by line.
-
-Prefer clear names and structure. Do not mechanically comment on every function
-or branch, or use comments to replace necessary code improvements within scope.
-
-Keep comments close to the relevant code, concise, and factually accurate. Follow
-the project's existing language and documentation conventions; document public
-interface contracts as the project requires.
-
-When behavior changes, check and update related comments, removing stale or
-misleading content. Do not expand the change into unrelated comment cleanup.
+Follow project conventions for language and public API documentation. When
+behavior changes, update related comments and remove obsolete ones.

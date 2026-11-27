@@ -1,16 +1,15 @@
 # Commit authorization and AI provenance
 
-Do not commit, amend, squash, or otherwise rewrite history unless the user
-explicitly requests it in the current request. Editing, branching, or passing
-checks never authorize a commit. Authorization covers one commit for the
-current logical change and then expires; never clean up history on your own.
+A commit, amend, squash, or other history rewrite requires explicit authorization
+in the current user request. One authorization covers one commit for the current
+change.
 
-An agent-created commit has one concise factual subject and one trailer:
+Use a concise, factual subject and append this trailer:
 
 ```text
 Co-authored-by: AGENT MODEL <EMAIL>
 ```
 
-For Codex use `Codex MODEL <noreply@openai.com>`, with the actual runtime model;
-omit the model when unavailable rather than guessing. Other agents require a
-documented official or project-owned identity; otherwise ask the user.
+For Codex, use `Codex MODEL <noreply@openai.com>` with the actual runtime model.
+Omit the model if unknown. For other agents, use a documented official or
+project-owned identity, or ask the user.

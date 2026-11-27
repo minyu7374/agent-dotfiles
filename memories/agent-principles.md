@@ -1,126 +1,75 @@
 # Engineering rules
 
-## Plan
+## Plan revisions
 
-Use the lightest workflow sufficient for the confirmed task and actual impact.
-Handle clear, simple changes directly. For non-trivial bounded changes, present
-a brief design and wait for approval. Use detailed design for shared-contract
-or component changes, data migrations, or important unresolved decisions.
-New files, features, or unfamiliar code alone do not justify heavier process;
-investigate relevant unknowns before escalating.
-
-Adjust workflow in either direction as evidence changes. Upgrade when the
-current approach is insufficient; downgrade when clarification or resolved risks
-remove the need. Explain material adjustments briefly, without restarting the
-whole plan or adding a separate approval for the workflow change itself.
-
-Treat feedback as a local revision, not a new task. Identify the challenged
-assumption or decision before changing it. Preserve agreed goals, constraints,
-non-goals, and still-required behavior, conventions, and acceptance checks unless
-the user changes them; remove only process, behavior, and checks whose
-justification no longer holds. Do not turn a local correction into a new
-objective. Obtain approval for material design or scope changes; do not reapprove
-unchanged work or expand scope merely because the process became heavier.
-
-These rules override third-party skill defaults for automatic workflow
-triggering, one-way escalation, and repeated approval gates. Preserve applicable
-architecture, debugging, verification, and permission requirements. Match checks
-to confirmed requirements and actual risks, independently of workflow depth.
-Before completion, check that requirements are met, still-required conventions
-and checks are preserved, and additions and removals are justified. These
-reasoning checks are internal by default and do not themselves require extra
-documents, tools, or approval steps. Stop when acceptance is complete unless
-new evidence justifies further work.
+When the user flags a specific problem, interpret the feedback in light of the
+task goals and the discussion so far. Revise the affected parts and preserve
+requirements and design choices that still hold. Avoid overcorrecting in the
+opposite direction.
 
 ## Shape, then diff
 
-Bound design by the confirmed task. Added behavior, restrictions, abstractions,
-compatibility, defensive logic, or process must be necessary to meet a confirmed
-user requirement, an explicit applicable project requirement, or a verified
-existing contract. A discovered problem is evidence to assess against that scope,
-not independent authorization to expand it.
+Base the design on confirmed user requirements, applicable project requirements,
+or verified existing contracts. Preferences, common practices, hypothetical risks,
+and possible future needs do not by themselves justify new features, abstractions,
+restrictions, or process.
 
-Do not promote implementation preferences, generic best practices, or hypothetical
-risks into requirements or use them to add unrequested behavior, restrictions,
-or process. This includes extra validation or rejection rules, fallback paths,
-and approval gates. Calling an addition safer, more robust, cleaner, or more
-future-proof does not establish a requirement. Make routine implementation
-choices within the confirmed behavior and scope. If an addition lacks a
-requirement basis, omit it and continue authorized work. Ask only when a missing
-material decision prevents completing the task and cannot be resolved from
-available evidence. Keep optional suggestions separate from implementation;
-do not turn them into prerequisites or blockers.
-
-Introduce abstractions only when current requirements or contracts need them;
-coherence does not require new interfaces, base types, or implementation layers.
-Design extensions as if required from the start within this boundary; coherence
-precedes a small diff. Reshape only the affected design when necessary, then
-change only what it requires.
-Match nearby style; do not refactor, rename, reformat, or add speculative behavior
-outside scope. Remove only orphans created by the change. Additions and removals
-both need a task-relevant reason. Simplification preserves still-required
-behavior, conventions, and checks; line, file, and abstraction counts alone do
-not decide what to keep.
+Use the `architectural-coherence` skill to keep the architecture coherent when
+extending or refactoring code. Limit changes to the affected parts.
+Each addition or removal should serve the current task.
+When simplifying, preserve behavior, conventions, and checks that still apply.
 
 ## Source layout
 
-In created or modified files, public items precede private ones; callers precede
-callees; a single-use helper follows its caller, and a shared helper follows its
-last caller. Preserve an existing consistent layout.
+Preserve an existing consistent layout. In new or modified code, place public
+items before private ones and callers before callees. Place helpers after their
+last caller. Avoid reordering a file solely for layout.
 
 ## Code comments
 
-When adding or changing code, proactively explain business rules, design choices,
-preconditions, edge cases, and external constraints that names and structure do
-not make clear. Focus comments on reasons, constraints, and likely misuse;
-briefly describe complex algorithms or flows without narrating code line by line.
-Prefer clear names and structure; do not mechanically comment on every function
-or branch, or substitute comments for necessary code improvements within scope.
+Use clear names and structure first. Beside the relevant code, explain
+non-obvious business rules, design choices, preconditions, edge cases, external
+constraints, and likely misuse. Briefly explain the approach in complex logic.
+Skip line-by-line commentary.
 
-Keep comments close to the relevant code, concise, and factually accurate. Follow
-project language and documentation conventions, including public interface
-contracts. Update related comments when behavior changes and remove stale or
-misleading content; avoid unrelated comment cleanup.
+Follow project conventions for language and public API documentation. When
+behavior changes, update related comments and remove obsolete ones.
 
 ## Communication
 
-Use Simplified Chinese in conversation, explanations, and summaries. Write
-technical material plainly: lead with the result, use established terms and
-exact facts, and avoid literary flourish, metaphor, and translationese.
+Lead with the result in technical docs, comments, commit messages, and
+explanations. Use plain language, established terms, and exact names, paths,
+values, or errors. Avoid flourish, metaphor, and translationese.
 
-Keep documents focused on their purpose. Revise the text directly; omit
-irrelevant discussion and editing history.
-
-When referring to code locations, provide clickable file references with accurate
-line numbers, using the client's supported format. Verify locations against the
-current file; do not guess line numbers.
+Edit documents directly and omit unrelated discussion and revision history. For
+code references, verify the current line number and link to it using the
+client’s supported format.
 
 ## Secrets
 
-Never reveal credentials in plaintext by default. Redact values and say so;
-after generating a secret, report its storage location, not its value. Reveal a
-specific value only when the user explicitly requests it.
+Redact credential values and note the redaction. After generating a secret,
+report where it is stored. Reveal a specific value only on explicit user
+request.
 
 ## Diagrams
 
-Use SVG for technical-document diagrams; never use ASCII or box-drawing.
-Mermaid requires an explicit user request or an SVG-incapable target; state why.
-Plain text is appropriate for code comments, terminal output, CLI help, and
-directory listings.
+Use a nearby SVG file or inline SVG for technical diagrams. Use Mermaid only if
+requested explicitly or the target cannot render SVG, and state why. Never draw
+diagrams with ASCII or box-drawing characters. Plain text is fine for code
+comments, terminal output, CLI help, and directory listings.
 
 ## Git history
 
-Do not commit, amend, squash, or rewrite history without an explicit request in
-the current request. Editing, branching, and passing checks are not
-authorization. One instruction covers one commit for the current logical change
-and then expires. Use a concise factual subject and append:
+A commit, amend, squash, or other history rewrite requires explicit authorization
+in the current user request. One authorization covers one commit for the current
+change.
+
+Use a concise, factual subject and append this trailer:
 
 ```text
 Co-authored-by: AGENT MODEL <EMAIL>
 ```
 
-For Codex use `Codex MODEL <noreply@openai.com>`, with the actual runtime model;
-omit the model when unavailable rather than guessing. Other agents need a
-documented official or project-owned identity, otherwise ask the user.
-
-Use the `architectural-coherence` skill for its full design and review method.
+For Codex, use `Codex MODEL <noreply@openai.com>` with the actual runtime model.
+Omit the model if unknown. For other agents, use a documented official or
+project-owned identity, or ask the user.
