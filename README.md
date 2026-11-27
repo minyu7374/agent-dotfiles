@@ -20,6 +20,7 @@ Claude Code、Codex、Gemini / Antigravity、OpenCode、CodeBuddy 的共享配�
 | `rules/` | Claude / CodeBuddy 原生加载的常驻规则 |
 | `memories/agent-principles.md` | Codex、Gemini / Antigravity、OpenCode 的常驻摘要 |
 | `skills/architectural-coherence/` | 各端共享的架构一致性手册 |
+| `zh/` | 中文版规则、常驻准则和技能；与根目录下的英文版按相同相对路径成对维护 |
 | `scripts/sync.sh` | 同步上述自定义资产 |
 | `apps/` | 各客户端的来源、落地位置与应用说明 |
 | `hooks/` | 可选诊断钩子，当前停用 |
@@ -52,10 +53,17 @@ Claude / CodeBuddy 的公共配置按对象递归合并：快照中的值优先�
 ./scripts/sync.sh --dry-run
 ./scripts/sync.sh
 
+# 安装中文版；省略 --lang 或指定 --lang en 安装英文版
+./scripts/sync.sh --lang zh
+./scripts/sync.sh --app codex --lang zh --dry-run
+
 # 修改脚本或配置后的检查
 bash -n scripts/*.sh hooks/*.sh
 jq empty config/*.json
 ```
+
+`--lang` 选择安装文本的语言。两版都要求用简体中文回复，并共用 `config/` 下的配置快照。
+切换语言时用相同的客户端范围再次同步即可。
 
 同步逻辑的验证在临时目录进行，核对用户字段保留、托管表替换和重复同步幂等性，
 不在项目中保留测试脚本。

@@ -1,3 +1,3 @@
 # Language
 
-- 与我对话、解释、总结时始终使用简体中文。
+- Always use Simplified Chinese for conversation, explanations, and summaries.

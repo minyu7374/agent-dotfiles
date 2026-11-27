@@ -3,6 +3,7 @@
 #
 # 用法:
 #   ./scripts/sync.sh                 # 同步全部 5 个 agent
+#   ./scripts/sync.sh --lang zh       # 安装中文版规则、技能和常驻准则
 #   ./scripts/sync.sh --app claude    # 只同步某一个
 #   ./scripts/sync.sh --dry-run       # 只打印将要执行的操作,不写盘
 #
@@ -18,12 +19,14 @@ REPO_ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 
 DRY_RUN=0
 APP_FILTER=""
+TEXT_ROOT="$REPO_ROOT"
 
 usage() {
   cat <<'EOF'
-用法: ./scripts/sync.sh [--dry-run] [--app claude|codex|gemini|opencode|codebuddy]
+用法: ./scripts/sync.sh [--dry-run] [--app claude|codex|gemini|opencode|codebuddy] [--lang en|zh]
 
 把本仓的自定义规则/技能/常驻准则/公共配置快照同步到各 AI agent。
+--lang 选择规则、技能和常驻准则的文本语言，默认 en（英文）。
 不管理 provider / 模型(由各 agent 原生配置)。
 EOF
 }
@@ -31,6 +34,13 @@ EOF
 while [[ $# -gt 0 ]]; do
   case "$1" in
     --dry-run) DRY_RUN=1; shift ;;
+    --lang)
+      case "${2:-}" in
+        en) TEXT_ROOT="$REPO_ROOT" ;;
+        zh) TEXT_ROOT="$REPO_ROOT/zh" ;;
+        *) echo "--lang 需要指定 en 或 zh" >&2; exit 1 ;;
+      esac
+      shift 2 ;;
     --app)
       APP_FILTER="${2:-}"; shift 2 ;;
     -h|--help) usage; exit 0 ;;
@@ -71,7 +81,7 @@ wants() {
 # ---- 常驻准则 ----
 # Gemini / OpenCode 的目标文件由本仓完全托管,直接覆盖;
 # Codex 的 AGENTS.md 可能与用户内容共存,用标记块替换,保留块外内容。
-PRINCIPLES_SRC="$REPO_ROOT/memories/agent-principles.md"
+PRINCIPLES_SRC="$TEXT_ROOT/memories/agent-principles.md"
 
 cp_principles() {
   local dest="$1"
@@ -120,7 +130,7 @@ PY
 sync_rules() {
   local dest="$1"
   run mkdir -p "$dest"
-  for f in "$REPO_ROOT"/rules/*.md; do
+  for f in "$TEXT_ROOT"/rules/*.md; do
     run cp "$f" "$dest/"
   done
 }
@@ -129,11 +139,11 @@ sync_rules() {
 sync_skills() {
   local dest="$1"
   run mkdir -p "$dest"
-  for sdir in "$REPO_ROOT"/skills/*/; do
+  for sdir in "$TEXT_ROOT"/skills/*/; do
     local name
     name="$(basename "$sdir")"
     if [[ $DRY_RUN -eq 1 ]]; then
-      printf '  [dry-run] sync skill %s -> %s\n' "$name" "$dest"
+      printf '  [dry-run] sync skill %s -> %s/%s\n' "$sdir" "$dest" "$name"
     else
       rm -rf "$dest/$name"
       cp -R "$sdir" "$dest/$name"
